@@ -282,9 +282,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ╰━━━━━━━━━━━━━━━━━━┄`
                     await client.sendMessage(m.chat, {
                         interactiveMessage: {
-                            title: menu,
-                            footer: config.settings.footer,
-                            thumbnail: "https://github.com/kiuur.png",
+                            header: {
+                                hasVideoMessage: false,
+                                hasImageMessage: true,
+                                imageMessage: { url: "https://github.com/kiuur.png" },
+                                title: menu,
+                                subtitle: config.settings.footer,
+                                renderLargerThumbnail: true
+                            },
                             nativeFlowMessage: {
                                 buttons: [
                                     {
