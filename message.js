@@ -97,41 +97,43 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         // Anti Status Mention Logic
         if (isGroup && wily.antitagsw) {
-            // Get all mentions including quoted and context
-            const allMentions = [
-                ...(m.mentionedJid || []),
-                ...(m.msg?.contextInfo?.mentionedJid || []),
-                ...(m.quoted?.mentionedJid || [])
-            ];
+            // Comprehensive mention detection
+            const contextMentions = m.msg?.contextInfo?.mentionedJid || [];
+            const quotedMentions = m.quoted?.mentionedJid || [];
+            const directMentions = m.mentionedJid || [];
+            const allMentions = [...new Set([...directMentions, ...contextMentions, ...quotedMentions])];
             
-            // Check for status mention JIDs or manual patterns
+            // Check body for manual @0 or @status@broadcast tags
+            const bodyText = (m.text || m.body || '').toLowerCase();
+            const hasManualTag = bodyText.includes('@0') || bodyText.includes('@status@broadcast');
+            
             const isStatusMention = allMentions.some(jid => 
                 jid === 'status@broadcast' || 
                 jid === '0@s.whatsapp.net' || 
                 jid.startsWith('0@')
-            ) || /@0|@status@broadcast/i.test(m.text || m.body || '');
+            ) || hasManualTag;
 
-            // Check for group/tagall mentions
+            // Group mention detection (@all, @everyone)
             const isGroupMention = allMentions.some(jid => jid.endsWith('@g.us')) || 
-                                 /@all|@everyone|@g.us/i.test(m.text || m.body || '');
+                                 bodyText.includes('@all') || bodyText.includes('@everyone');
             
             if ((isStatusMention || isGroupMention) && !isAdmins && !isBot) {
                 try {
                     const reason = isStatusMention ? 'status mention' : 'group mention';
+                    console.log(chalk.red(`[AntiTagSW] DETECTED: ${reason} from ${pushname} in ${groupName}`));
                     
-                    // Simple Warning with Mention
+                    // Simple warning
                     await client.sendMessage(from, { 
                         text: `🛡️ *ANTI ${reason.toUpperCase()}*\n\n⚠️ @${sender.split('@')[0]}, dilarang melakukan tag tersebut!`, 
                         mentions: [sender] 
                     });
                     
-                    // Delete message if bot is admin
+                    // Force delete if bot is admin
                     if (isBotAdmins) {
                         await client.sendMessage(from, { delete: m.key });
                     }
                     
-                    console.log(chalk.cyan(`[AntiTagSW] ${reason} detected in ${groupName} by ${pushname}`));
-                    return; // Stop further processing
+                    return; // Stop processing
                 } catch (e) {
                     console.log(chalk.red('[AntiTagSW] Error:'), e);
                 }
