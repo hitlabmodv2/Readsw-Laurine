@@ -7,10 +7,10 @@ const config = {
     thumbUrl: "https://github.com/kiuur.png",
     session: "sessions",
     message: {
-        owner: "no, this is for owners only",
-        group: "this is for groups only",
-        admin: "this command is for admin only",
-        private: "this is specifically for private chat"
+        owner: "Fitur ini hanya untuk owner bot",
+        group: "Fitur ini hanya dapat digunakan di dalam grup",
+        admin: "Fitur ini hanya untuk admin grup",
+        private: "Fitur ini hanya untuk chat pribadi"
     },
     settings: {
         title: "w-shennmine",
