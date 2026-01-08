@@ -279,7 +279,7 @@ command:
                                     {
                                         name: "single_select",
                                         buttonParamsJson: JSON.stringify({
-                                            title: "shennminè",
+                                            title: "✦ LAURINE - DASHBOARD ✦",
                                             sections: [
                                                 {
                                                     title: "# SERVER INFO",
