@@ -51,7 +51,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const botNumber = await client.decodeJid(client.user.id);
         const isBot = botNumber.includes(senderNumber)
         
-        const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3"].includes(body);
+        const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1);
@@ -252,6 +252,7 @@ command:
  ▢ ${prefix}addemoji
  ▢ ${prefix}delemoji
  ▢ ${prefix}listemoji
+ ▢ ${prefix}ping
  ▢ ${prefix}mesinfo`
                     await client.sendMessage(m.chat, {
                         interactiveMessage: {
@@ -281,6 +282,13 @@ command:
                                     }
                                 }),
                                 buttons: [
+                                    {
+                                        name: "quick_reply",
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: "Ping Server",
+                                            id: "ping"
+                                        })
+                                    },
                                     {
                                         name: "single_select",
                                         buttonParamsJson: JSON.stringify({
