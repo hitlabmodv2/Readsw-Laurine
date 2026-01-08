@@ -228,7 +228,7 @@ const clientstart = async() => {
         }
     });
 
-    client.public = config().status.public
+    client.public = JSON.parse(fs.readFileSync('./settings/wily.json')).public
     
     client.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update

@@ -1,3 +1,5 @@
 {
-  "reactionsw": true
+  "reactionsw": true,
+  "public": true,
+  "terminal": true
 }
