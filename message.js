@@ -496,10 +496,12 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let mime = (qmsg.msg || qmsg).mimetype || '';
                 if (!/image/.test(mime)) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
                 try {
-                    let media = await client.downloadAndSaveMediaMessage(qmsg);
-                    await client.updateProfilePicture(client.user.id, { url: media });
-                    fs.unlinkSync(media);
-                    reply("Berhasil mengganti foto profil bot ✅");
+                    let media = await client.downloadAndSaveMediaMessage(qmsg, 'anime_girl', false);
+                    let targetPath = './w-shennmine/lib/media/anime_girl.png';
+                    if (fs.existsSync(targetPath)) fs.unlinkSync(targetPath);
+                    fs.renameSync(media, targetPath);
+                    await client.updateProfilePicture(client.user.id, { url: targetPath });
+                    reply("Berhasil mengganti foto profil bot dan thumbnail menu ✅");
                 } catch (e) {
                     console.log(e);
                     reply("Gagal mengganti foto profil bot ❌");
