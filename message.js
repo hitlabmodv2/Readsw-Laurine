@@ -96,8 +96,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         
         // Anti Status Mention Logic
-        if (isGroup && wily.antitagsw && m.mentionedJid && m.mentionedJid.includes('status@broadcast')) {
-            if (!isAdmins && !isBot) {
+        if (isGroup && wily.antitagsw) {
+            const hasStatusMention = (m.mentionedJid && m.mentionedJid.includes('status@broadcast')) || 
+                                    (m.msg && m.msg.contextInfo && m.msg.contextInfo.mentionedJid && m.msg.contextInfo.mentionedJid.includes('status@broadcast'));
+            
+            if (hasStatusMention && !isAdmins && !isBot) {
                 try {
                     await client.sendMessage(from, { text: `⚠️ Anti Status Mention detected! @${sender.split('@')[0]} dilarang melakukan status mention.`, mentions: [sender] });
                     if (isBotAdmins) {
