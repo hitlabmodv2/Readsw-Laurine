@@ -275,27 +275,6 @@ command:
                             footer: config.settings.footer,
                             thumbnail: "https://github.com/kiuur.png",
                             nativeFlowMessage: {
-                                messageParamsJson: JSON.stringify({
-                                    limited_time_offer: {
-                                        text: "shenń, yes 1437",
-                                        url: "t.me/kiuurmine",
-                                        copy_code: "shenń, yes 1437",
-                                        expiration_time: Date.now() * 999
-                                    },
-                                    bottom_sheet: {
-                                        in_thread_buttons_limit: 2,
-                                        divider_indices: [1, 2, 3, 4, 5, 999],
-                                        list_title: "shennminè",
-                                        button_title: "shenń"
-                                    },
-                                    tap_target_configuration: {
-                                        title: "▸ X ◂",
-                                        description: "bomboclard",
-                                        canonical_url: "https://t.me/sh3nnmine",
-                                        domain: "shop.example.com",
-                                        button_index: 0
-                                    }
-                                }),
                                 buttons: [
                                     {
                                         name: "single_select",
