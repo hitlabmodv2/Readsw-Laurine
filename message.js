@@ -337,7 +337,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "public": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (text.toLowerCase() === 'on') {
@@ -356,7 +356,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "terminal": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (text.toLowerCase() === 'on') {
@@ -373,7 +373,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "reactionsw": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (text.toLowerCase() === 'on') {
@@ -390,7 +390,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "addemoji": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                 const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
@@ -438,7 +438,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "delemoji": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                 const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
@@ -487,7 +487,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "listemoji": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                 let msg = `╭━━━『 LIST EMOJI 』━━━┄\n`;
                 msg += `┃\n`;
@@ -499,7 +499,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "setppbot": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 let qmsg = m.quoted ? m.quoted : m;
                 let mime = (qmsg.msg || qmsg).mimetype || '';
                 if (!/image/.test(mime)) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
@@ -517,7 +517,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "get":{
-                if (!isBot) return
+                if (!isBot) return reply(config.message.owner);
                 if (!/^https?:\/\//.test(text)) return reply(`*ex:* ${prefix + command} https://kyuurzy.site`);
                 const ajg = await fetch(text);
                 await reaction(m.chat, "⚡")
@@ -558,7 +558,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break
             case "insp": {
-                if (!isBot) return
+                if (!isBot) return reply(config.message.owner);
                 if (!text && !m.quoted) return reply(`*reply:* ${prefix + command}`);
                 let quotedType = m.quoted?.mtype || '';
                 let penis = JSON.stringify({ [quotedType]: m.quoted }, null, 2);
@@ -572,7 +572,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break
             case 'tagall':{
-                if (!isBot) return
+                if (!isBot) return reply(config.message.owner);
                 const textMessage = args.join(" ") || "nothing";
                 let teks = `tagall message :\n> *${textMessage}*\n\n`;
                 const groupMetadata = await client.groupMetadata(m.chat);
@@ -588,7 +588,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break
             case "exec": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!budy.startsWith(".exec")) return;
                 
                 const { exec } = require("child_process");
@@ -601,7 +601,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "eval": {
-                if (!isBot) return;
+                if (!isBot) return reply(config.message.owner);
                 if (!budy.startsWith(".eval")) return;
                 
                 const args = budy.trim().split(' ').slice(1).join(' ');
