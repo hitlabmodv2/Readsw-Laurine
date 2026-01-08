@@ -172,7 +172,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         if (!pluginsDisable) return;  
 
         switch (command) {
-            case "menu": {
+            case "menu":{
                 if (!isBot) return
                 const totalMem = os.totalmem();
                 const freeMem = os.freemem();
@@ -181,63 +181,101 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const formattedTotalMem = formatSize(totalMem);
                 let timestamp = speed()
                 let latensi = speed() - timestamp
-                let menuText = `*〔 INFO BOT 〕*
- ▢ *Speed:* ${latensi.toFixed(4)} s
- ▢ *Runtime:* ${runtime(process.uptime())}
- ▢ *RAM:* ${formattedUsedMem} / ${formattedTotalMem}
-
-*〔 MAIN MENU 〕*
+                let menu = `
+ ▢ speed: ${latensi.toFixed(4)} s
+ ▢ runtime: ${runtime(process.uptime())}
+ ▢ RAM: ${formattedUsedMem} / ${formattedTotalMem}
+                
+command:
  ▢ ${prefix}tagall
  ▢ ${prefix}get
  ▢ ${prefix}insp
  ▢ ${prefix}csesi
- ▢ ${prefix}mesinfo
-
-*〔 STATUS MENU 〕*
+ ▢ ${prefix}exec
+ ▢ ${prefix}eval
  ▢ ${prefix}reactionsw
  ▢ ${prefix}addemoji
  ▢ ${prefix}delemoji
- ▢ ${prefix}listemoji`
-
-                await client.sendMessage(m.chat, {
-                    interactiveMessage: {
-                        header: {
-                            title: `*Readsw-Laurine*`,
-                            hasMediaAttachment: true,
-                            imageMessage: (await client.prepareWAMessageMedia({ image: { url: 'https://github.com/kiuur.png' } }, { upload: client.waUploadToServer })).imageMessage
-                        },
-                        body: { text: menuText },
-                        footer: { text: config.settings.footer },
-                        nativeFlowMessage: {
-                            buttons: [
-                                {
-                                    name: "single_select",
-                                    buttonParamsJson: JSON.stringify({
-                                        title: "KLIK DI SINI",
-                                        sections: [
-                                            {
-                                                title: "DAFTAR FITUR",
-                                                rows: [
-                                                    { title: "Menu Utama", description: "Menampilkan fitur dasar", id: ".menu" },
-                                                    { title: "Status Auto", description: "Pengaturan auto reaction", id: ".reactionsw" },
-                                                    { title: "Tag Semua", description: "Tag semua member grup", id: ".tagall" },
-                                                    { title: "Emoji List", description: "Lihat daftar emoji", id: ".listemoji" }
-                                                ]
-                                            },
-                                            {
-                                                title: "SOCIAL MEDIA",
-                                                rows: [
-                                                    { title: "Telegram", description: "Hubungi via Telegram", id: ".owner" },
-                                                    { title: "Github", description: "Lihat source code", id: ".sc" }
-                                                ]
-                                            }
-                                        ]
-                                    })
-                                }
-                            ]
+ ▢ ${prefix}listemoji
+ ▢ ${prefix}mesinfo`
+                    await client.sendMessage(m.chat, {
+                        interactiveMessage: {
+                            title: menu,
+                            footer: config.settings.footer,
+                            thumbnail: "https://github.com/kiuur.png",
+                            nativeFlowMessage: {
+                                messageParamsJson: JSON.stringify({
+                                    limited_time_offer: {
+                                        text: "shenń, yes 1437",
+                                        url: "t.me/kiuurmine",
+                                        copy_code: "shenń, yes 1437",
+                                        expiration_time: Date.now() * 999
+                                    },
+                                    bottom_sheet: {
+                                        in_thread_buttons_limit: 2,
+                                        divider_indices: [1, 2, 3, 4, 5, 999],
+                                        list_title: "shennminè",
+                                        button_title: "shenń"
+                                    },
+                                    tap_target_configuration: {
+                                        title: "▸ X ◂",
+                                        description: "bomboclard",
+                                        canonical_url: "https://t.me/sh3nnmine",
+                                        domain: "shop.example.com",
+                                        button_index: 0
+                                    }
+                                }),
+                                buttons: [
+                                    {
+                                        name: "single_select",
+                                        buttonParamsJson: JSON.stringify({ has_multiple_buttons: true })
+                                    },
+                                    {
+                                        name: "call_permission_request",
+                                        buttonParamsJson: JSON.stringify({ has_multiple_buttons: true })
+                                    },
+                                    {
+                                        name: "single_select",
+                                        buttonParamsJson: JSON.stringify({
+                                            title: "shennminè",
+                                            sections: [
+                                                {
+                                                    title: "# X - the best",
+                                                    highlight_label: "label",
+                                                    rows: [
+                                                        {
+                                                            title: "@dittsans", 
+                                                            description: "b!cth",
+                                                            id: "row_1"
+                                                        },
+                                                        { 
+                                                            title: "@kyuucode",
+                                                            description: "sh3nnmine",
+                                                            id: "row_2"
+                                                        },
+                                                        { 
+                                                            title: "@devorsixcore",
+                                                            description: "rock and roll",
+                                                            id: "row_3" 
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            has_multiple_buttons: true
+                                        })
+                                    },
+                                    {
+                                        name: "cta_copy",
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: "shennminè",
+                                            id: "123456789",
+                                            copy_code: "https://t.me/sh3nnmine"
+                                        })
+                                    }
+                                ]
+                            }
                         }
-                    }
-                }, { quoted: fquoted.packSticker });
+                    }, { quoted: fquoted.packSticker });
             }
             break
             case "mesinfo": {
