@@ -261,6 +261,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}eval
 ┃ ▢ ${prefix}exec
 ┃ ▢ ${prefix}csesi
+┃ ▢ ${prefix}setppbot
 ┃
 ┣━━『 *GROUP MENU* 』━━┄
 ┃ ▢ ${prefix}tagall
