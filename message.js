@@ -97,9 +97,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         // Anti Status Mention Logic
         if (isGroup && wily.antitagsw) {
-            const hasStatusMention = (m.mentionedJid && m.mentionedJid.includes('status@broadcast')) || 
-                                    (m.msg && m.msg.contextInfo && m.msg.contextInfo.mentionedJid && m.msg.contextInfo.mentionedJid.includes('status@broadcast'));
+            const mentionedJid = m.mentionedJid || [];
+            const contextMentionedJid = m.msg?.contextInfo?.mentionedJid || [];
+            const allMentions = [...new Set([...mentionedJid, ...contextMentionedJid])];
             
+            const hasStatusMention = allMentions.includes('status@broadcast');
+            
+            // DEBUG LOG
+            console.log(chalk.cyan(`[DEBUG AntiTagSW] Group: ${groupName}, Sender: ${pushname}, Mentions: ${JSON.stringify(allMentions)}, Detected: ${hasStatusMention}`));
+
             if (hasStatusMention && !isAdmins && !isBot) {
                 try {
                     await client.sendMessage(from, { text: `⚠️ Anti Status Mention detected! @${sender.split('@')[0]} dilarang melakukan status mention.`, mentions: [sender] });
