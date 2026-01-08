@@ -228,14 +228,6 @@ command:
                                 buttons: [
                                     {
                                         name: "single_select",
-                                        buttonParamsJson: JSON.stringify({ has_multiple_buttons: true })
-                                    },
-                                    {
-                                        name: "call_permission_request",
-                                        buttonParamsJson: JSON.stringify({ has_multiple_buttons: true })
-                                    },
-                                    {
-                                        name: "single_select",
                                         buttonParamsJson: JSON.stringify({
                                             title: "shennminè",
                                             sections: [
@@ -260,8 +252,7 @@ command:
                                                         }
                                                     ]
                                                 }
-                                            ],
-                                            has_multiple_buttons: true
+                                            ]
                                         })
                                     },
                                     {
