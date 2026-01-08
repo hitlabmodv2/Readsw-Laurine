@@ -55,10 +55,10 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const wilyData = JSON.parse(fs.readFileSync('./settings/wily.json'));
         const isPublic = wilyData.public !== undefined ? wilyData.public : true;
         
-        if (!isPublic && !isBot) return;
-
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
+
+        if (!isPublic && !isBot && isCmd) return;
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1);
         const pushname = m.pushName || "No Name";
@@ -93,7 +93,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
-            if (isCmd || isBot) {
+            if (isCmd || isBot || isPublic) {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Message`));
                 console.log(
                     `▢ Tanggal: ${new Date().toLocaleString()}\n` +
