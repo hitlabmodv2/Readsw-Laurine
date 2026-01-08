@@ -265,25 +265,42 @@ const clientstart = async() => {
                 }
 
                 if (anu.action === 'add') {
-                    let welcomeMsg = `Welcome @${num.split("@")[0]} to ${metadata.subject}\n\nSalam kenal ya!`
+                    let joinMethod = 'via tautan undangan'
+                    if (anu.author && anu.author !== num) {
+                        joinMethod = `diundang oleh @${anu.author.split('@')[0]}`
+                    }
+                    
+                    let welcomeMsg = `Welcome @${num.split("@")[0]} to ${metadata.subject}\n\nBergabung ${joinMethod}\nSalam kenal ya!`
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
                         footer: "Laurine Bot",
                         buttons: [{
                             buttonId: "salam_kenal",
-                            buttonText: { displayText: "Salam kenal" },
+                            buttonText: { displayText: "Salam kenal 👋" },
                             type: 1
                         }],
                         headerType: 4,
-                        mentions: [num]
+                        mentions: [num, anu.author].filter(v => v)
                     })
                 } else if (anu.action === 'remove') {
-                    let goodbyeMsg = `Goodbye @${num.split("@")[0]}\n\nSemoga harimu menyenangkan!`
+                    let leaveMethod = 'keluar sendiri'
+                    if (anu.author && anu.author !== num) {
+                        leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`
+                    }
+
+                    let goodbyeMsg = `Goodbye @${num.split("@")[0]}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
-                        mentions: [num]
+                        footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "sampai_jumpa",
+                            buttonText: { displayText: "Sampai jumpa 👋" },
+                            type: 1
+                        }],
+                        headerType: 4,
+                        mentions: [num, anu.author].filter(v => v)
                     })
                 }
             }
