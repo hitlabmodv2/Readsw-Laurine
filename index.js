@@ -307,7 +307,8 @@ const clientstart = async() => {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        let type = await FileType.fromBuffer(buffer);
+        const { fileTypeFromBuffer } = await import('file-type');
+        let type = await fileTypeFromBuffer(buffer);
         let trueFileName = attachExtension ? filename + "." + type.ext : filename;
         await fs.writeFileSync(trueFileName, buffer);
         
@@ -433,7 +434,8 @@ const clientstart = async() => {
               (filename = PATH, fs.readFileSync(PATH)) : typeof PATH === 'string' ? 
               PATH : Buffer.alloc(0)
         if (!Buffer.isBuffer(data)) throw new TypeError('Result is not a buffer')
-        const type = await FileType.fromBuffer(data) || {
+        const { fileTypeFromBuffer } = await import('file-type');
+        const type = await fileTypeFromBuffer(data) || {
             mime: 'application/octet-stream',
             ext: '.bin'
         }
