@@ -172,6 +172,18 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         if (!pluginsDisable) return;  
 
         switch (command) {
+            case "row_1": {
+                reply("Anda memilih baris 1: @dittsans (b!cth)");
+            }
+            break;
+            case "row_2": {
+                reply("Anda memilih baris 2: @kyuucode (sh3nnmine)");
+            }
+            break;
+            case "row_3": {
+                reply("Anda memilih baris 3: @devorsixcore (rock and roll)");
+            }
+            break;
             case "menu":{
                 if (!isBot) return
                 const totalMem = os.totalmem();
