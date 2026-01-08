@@ -55,7 +55,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1);
-        const pushname = m.pushName || "No Name";
+        const pushname = m.pushName || (m.key.fromMe ? (client.user.name || client.user.id.split(':')[0]) : "No Name");
         const text = q = args.join(" ");
         const quoted = m.quoted ? m.quoted : m;
         const mime = (quoted.msg || quoted).mimetype || '';
