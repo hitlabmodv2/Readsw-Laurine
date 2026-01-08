@@ -193,6 +193,40 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 reply("Anda memilih baris 3: @devorsixcore (rock and roll)");
             }
             break;
+            case "ping": {
+                if (!isBot) return;
+                const totalMem = os.totalmem();
+                const freeMem = os.freemem();
+                const usedMem = totalMem - freeMem;
+                const formattedUsedMem = formatSize(usedMem);
+                const formattedTotalMem = formatSize(totalMem);
+                const freeMemFormatted = formatSize(freeMem);
+                const cpuModel = os.cpus()[0].model;
+                const cpuSpeed = os.cpus()[0].speed;
+                const platform = os.platform();
+                const arch = os.arch();
+                
+                let timestamp = speed();
+                let latensi = speed() - timestamp;
+                
+                let pingMsg = `╭━━━『 *INFO SERVER* 』━━━┄
+┃
+┃ 🚀 *Latensi:* ${latensi.toFixed(4)} ms
+┃ ⏳ *Runtime:* ${runtime(process.uptime())}
+┃
+┃ 📊 *RAM Usage:*
+┃ ${formattedUsedMem} / ${formattedTotalMem}
+┃ (Free: ${freeMemFormatted})
+┃
+┃ 💻 *Server Info:*
+┃ ▢ *CPU:* ${cpuModel}
+┃ ▢ *Speed:* ${cpuSpeed} MHz
+┃ ▢ *Platform:* ${platform} (${arch})
+┃
+╰━━━━━━━━━━━━━━━━━━┄`;
+                reply(pingMsg);
+            }
+            break;
             case "menu":{
                 if (!isBot) return
                 const totalMem = os.totalmem();
