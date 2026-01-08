@@ -102,18 +102,25 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             const allMentions = [...new Set([...mentionedJid, ...contextMentionedJid])];
             
             // Comprehensive check for status mention variants
-            const hasStatusMention = allMentions.some(jid => 
+            const isStatusMention = allMentions.some(jid => 
                 jid === 'status@broadcast' || 
                 jid === '0@s.whatsapp.net' || 
                 jid.startsWith('0@')
             ) || /@0|@status@broadcast/i.test(m.text || m.body || '');
+
+            // Check if it's a "Tag All" or Group mention
+            const isGroupMention = allMentions.some(jid => jid.endsWith('@g.us')) || 
+                                 /@all|@everyone|@g.us/i.test(m.text || m.body || '');
             
             // DEBUG LOG
-            console.log(chalk.cyan(`[DEBUG AntiTagSW] Group: ${groupName}, Sender: ${pushname}, Mentions: ${JSON.stringify(allMentions)}, Detected: ${hasStatusMention}`));
+            if (isStatusMention || isGroupMention) {
+                console.log(chalk.cyan(`[DEBUG AntiTagSW] Group: ${groupName}, Sender: ${pushname}, Mentions: ${JSON.stringify(allMentions)}, Status: ${isStatusMention}, GroupMention: ${isGroupMention}`));
+            }
 
-            if (hasStatusMention && !isAdmins && !isBot) {
+            if ((isStatusMention || isGroupMention) && !isAdmins && !isBot) {
                 try {
-                    await client.sendMessage(from, { text: `⚠️ Anti Status Mention detected! @${sender.split('@')[0]} dilarang melakukan status mention.`, mentions: [sender] });
+                    const reason = isStatusMention ? 'status mention' : 'group mention';
+                    await client.sendMessage(from, { text: `⚠️ Anti ${reason} detected! @${sender.split('@')[0]} dilarang melakukan hal tersebut.`, mentions: [sender] });
                     if (isBotAdmins) {
                         await client.sendMessage(from, { delete: m.key });
                     }
