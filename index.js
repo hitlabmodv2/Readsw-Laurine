@@ -96,6 +96,8 @@ const clientstart = async() => {
             }
         }
     });
+
+    client.prepareWAMessageMedia = prepareWAMessageMedia;
     
     if (method === '1' && !state.creds.registered && phoneNumber) {
         console.log(`/> Requested pairing code for number: ${phoneNumber}`);
