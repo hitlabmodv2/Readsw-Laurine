@@ -239,6 +239,12 @@ const clientstart = async() => {
                 setTimeout(() => clientstart(), 60000)
                 return
             }
+            // Add automatic reconnection for common errors
+            if (statusCode !== DisconnectReason.loggedOut) {
+                console.log(chalk.yellow(`🔄 Koneksi terputus (Status: ${statusCode}). Mencoba menyambung kembali...`))
+                setTimeout(() => clientstart(), 3000)
+                return
+            }
         }
         const { konek } = require('./w-shennmine/lib/connection/connect')
         konek({ client, update, clientstart, DisconnectReason, Boom })

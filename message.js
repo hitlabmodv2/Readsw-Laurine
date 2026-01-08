@@ -35,7 +35,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             m.mtype === "templateButtonReplyMessage" ? m.msg.selectedId :
             m.mtype === "messageContextInfo" ? m.message.buttonsResponseMessage?.selectedButtonId ||
             m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text : ""
-        );
+        ) || "";
         
         const sender = m.key.fromMe ? client.user.id.split(":")[0] + "@s.whatsapp.net" ||
               client.user.id : m.key.participant || m.key.remoteJid;
