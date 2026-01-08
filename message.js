@@ -498,6 +498,40 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 reply(msg);
             }
             break;
+            case "welcome": {
+                if (!isBot) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.welcome = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Welcome berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.welcome = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Welcome berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "goodbye": {
+                if (!isBot) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.goodbye = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Goodbye berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.goodbye = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Goodbye berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
             case "setppbot": {
                 if (!isBot) return reply(config.message.owner);
                 let qmsg = m.quoted ? m.quoted : m;

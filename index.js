@@ -247,6 +247,57 @@ const clientstart = async() => {
         const { konek } = require('./w-shennmine/lib/connection/connect')
         konek({ client, update, clientstart, DisconnectReason, Boom })
     })
+
+    client.ev.on('group-participants.update', async (anu) => {
+        const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
+        if (!wily.welcome && anu.action === 'add') return
+        if (!wily.goodbye && anu.action === 'remove') return
+        
+        try {
+            let metadata = await client.groupMetadata(anu.id)
+            let participants = anu.participants
+            for (let num of participants) {
+                let ppuser
+                try {
+                    ppuser = await client.profilePictureUrl(num, 'image')
+                } catch {
+                    ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+                }
+
+                if (anu.action === 'add') {
+                    let welcomeMsg = `Welcome @${num.split("@")[0]} to ${metadata.subject}\n\nSalam kenal ya!`
+                    await client.sendMessage(anu.id, {
+                        interactiveMessage: {
+                            header: {
+                                hasMediaAttachment: true,
+                                imageMessage: (await client.prepareWAMessageMedia({ image: { url: ppuser } }, { upload: client.waUploadToServer })).imageMessage
+                            },
+                            body: { text: welcomeMsg },
+                            footer: { text: "Laurine Bot" },
+                            nativeFlowMessage: {
+                                buttons: [{
+                                    name: "quick_reply",
+                                    buttonParamsJson: JSON.stringify({
+                                        display_text: "Salam kenal",
+                                        id: "salam_kenal"
+                                    })
+                                }]
+                            }
+                        }
+                    }, { mentions: [num] })
+                } else if (anu.action === 'remove') {
+                    let goodbyeMsg = `Goodbye @${num.split("@")[0]}\n\nSemoga harimu menyenangkan!`
+                    await client.sendMessage(anu.id, {
+                        image: { url: ppuser },
+                        caption: goodbyeMsg,
+                        mentions: [num]
+                    })
+                }
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    })
     
     client.deleteMessage = async (chatId, key) => {
         try {
