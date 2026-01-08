@@ -284,7 +284,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                         interactiveMessage: {
                             title: menu,
                             footer: config.settings.footer,
-                            thumbnail: fs.readFileSync('./w-shennmine/lib/media/anime_girl.png'),
+                            thumbnail: "./w-shennmine/lib/media/anime_girl.png",
                             nativeFlowMessage: {
                                 buttons: [
                                     {
