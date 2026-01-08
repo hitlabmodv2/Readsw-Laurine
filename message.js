@@ -96,7 +96,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
-        // Anti Status Mention Logic (Decoded Version)
+        // Anti Status Mention Logic (Unlocked Version)
         if (isGroup && wily.antitagsw) {
             if (m.mtype === 'groupStatusMentionMessage') {
                 if (isAdmins || isOwner) {
@@ -109,7 +109,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                             contextInfo: { mentionedJid: [sender] }
                         }, { quoted: m });
 
-                        // Delete
+                        // Delete & Kick
                         if (isBotAdmins) {
                             await client.sendMessage(from, {
                                 delete: {
@@ -119,50 +119,12 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                                     participant: sender
                                 }
                             });
-                            // Kick
                             await client.groupParticipantsUpdate(from, [sender], 'remove');
                         }
                         return; // Stop processing
                     } catch (e) {
                         console.log(chalk.red('[AntiTagSW] Error:'), e);
                     }
-                }
-            }
-
-            // Fallback for regular text-based tags if mtype is not enough
-            const contextMentions = m.msg?.contextInfo?.mentionedJid || [];
-            const quotedMentions = m.quoted?.mentionedJid || [];
-            const directMentions = m.mentionedJid || [];
-            const allMentions = [...new Set([...directMentions, ...contextMentions, ...quotedMentions])];
-            
-            const bodyText = (m.body || m.text || '').toLowerCase();
-            const hasManualTag = bodyText.includes('@0') || bodyText.includes('@status@broadcast');
-            
-            const isStatusMention = allMentions.some(jid => 
-                jid === 'status@broadcast' || 
-                jid === '0@s.whatsapp.net' || 
-                jid.startsWith('0@')
-            ) || hasManualTag;
-
-            const isGroupMention = allMentions.some(jid => jid.endsWith('@g.us')) || 
-                                 bodyText.includes('@all') || bodyText.includes('@everyone');
-            
-            if ((isStatusMention || isGroupMention) && !isAdmins && !isBot) {
-                try {
-                    const reason = isStatusMention ? 'status mention' : 'group mention';
-                    console.log(chalk.red(`[AntiTagSW] DETECTED: ${reason} from ${m.sender} in ${m.chat}`));
-                    
-                    await client.sendMessage(m.chat, { 
-                        text: `🛡️ *ANTI ${reason.toUpperCase()}*\n\n⚠️ @${m.sender.split('@')[0]}, dilarang melakukan tag tersebut!`, 
-                        mentions: [m.sender] 
-                    });
-                    
-                    if (isBotAdmins) {
-                        await client.sendMessage(m.chat, { delete: m.key });
-                    }
-                    return; 
-                } catch (e) {
-                    console.log(chalk.red('[AntiTagSW] Error:'), e);
                 }
             }
         }
