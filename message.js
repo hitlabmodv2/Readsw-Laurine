@@ -201,27 +201,42 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const formattedUsedMem = formatSize(usedMem);
                 const formattedTotalMem = formatSize(totalMem);
                 const freeMemFormatted = formatSize(freeMem);
-                const cpuModel = os.cpus()[0].model;
-                const cpuSpeed = os.cpus()[0].speed;
+                const cpu = os.cpus();
+                const cpuModel = cpu[0].model;
+                const cpuSpeed = cpu[0].speed;
                 const platform = os.platform();
                 const arch = os.arch();
+                const loadAvg = os.loadavg().map(v => v.toFixed(2)).join(", ");
+                const uptime = os.uptime();
+                
+                // Real-time Date & Time (Asia/Jakarta)
+                const now = moment().tz("Asia/Jakarta");
+                const hari = now.format("dddd");
+                const tanggal = now.format("DD MMMM YYYY");
+                const waktu = now.format("HH:mm:ss");
                 
                 let timestamp = speed();
                 let latensi = speed() - timestamp;
                 
-                let pingMsg = `╭━━━『 *INFO SERVER* 』━━━┄
+                let pingMsg = `╭━━━『 *SERVER STATUS* 』━━━┄
+┃
+┃ 📅 *Hari:* ${hari}
+┃ 📆 *Tanggal:* ${tanggal}
+┃ ⌚ *Waktu:* ${waktu} WIB
 ┃
 ┃ 🚀 *Latensi:* ${latensi.toFixed(4)} ms
-┃ ⏳ *Runtime:* ${runtime(process.uptime())}
+┃ ⏳ *Runtime Bot:* ${runtime(process.uptime())}
+┃ 🕒 *Uptime Server:* ${runtime(uptime)}
 ┃
-┃ 📊 *RAM Usage:*
-┃ ${formattedUsedMem} / ${formattedTotalMem}
-┃ (Free: ${freeMemFormatted})
+┃ 📊 *Resource Usage:*
+┃ ▢ *RAM:* ${formattedUsedMem} / ${formattedTotalMem}
+┃ ▢ *Free:* ${freeMemFormatted}
+┃ ▢ *Load:* ${loadAvg}
 ┃
-┃ 💻 *Server Info:*
+┃ 💻 *System Info:*
 ┃ ▢ *CPU:* ${cpuModel}
 ┃ ▢ *Speed:* ${cpuSpeed} MHz
-┃ ▢ *Platform:* ${platform} (${arch})
+┃ ▢ *OS:* ${platform} (${arch})
 ┃
 ╰━━━━━━━━━━━━━━━━━━┄`;
                 reply(pingMsg);
