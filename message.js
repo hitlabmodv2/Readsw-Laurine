@@ -272,6 +272,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mesinfo
 ┃
 ┣━━『 *UTILITIES* 』━━┄
+┃ ▢ ${prefix}public
+┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
@@ -324,6 +326,42 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const type = m.quoted.mtype;
                 const id = m.quoted.id;
                 reply(`Pesan yang di-reply memiliki:\n- Tipe pesan: *${type}*\n- ID pesan: *${id}*`);
+            }
+            break;
+            case "public": {
+                if (!isBot) return;
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.public = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    client.public = true;
+                    reply('Fitur Public Mode berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.public = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    client.public = false;
+                    reply('Fitur Self Mode berhasil diaktifkan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "terminal": {
+                if (!isBot) return;
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.terminal = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Terminal Mode berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.terminal = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Terminal Mode berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
             }
             break;
             case "reactionsw": {
