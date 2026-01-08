@@ -283,13 +283,6 @@ command:
                                 }),
                                 buttons: [
                                     {
-                                        name: "quick_reply",
-                                        buttonParamsJson: JSON.stringify({
-                                            display_text: "Ping Server",
-                                            id: "ping"
-                                        })
-                                    },
-                                    {
                                         name: "single_select",
                                         buttonParamsJson: JSON.stringify({
                                             title: "shennminè",
@@ -298,6 +291,11 @@ command:
                                                     title: "# X - the best",
                                                     highlight_label: "label",
                                                     rows: [
+                                                        {
+                                                            title: "Ping Server",
+                                                            description: "Cek kecepatan respon & info server",
+                                                            id: "ping"
+                                                        },
                                                         {
                                                             title: "@dittsans", 
                                                             description: "b!cth",
