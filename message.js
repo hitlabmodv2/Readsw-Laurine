@@ -51,8 +51,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const botNumber = await client.decodeJid(client.user.id);
         const isBot = botNumber.includes(senderNumber)
         
-        const isCmd = body.startsWith(prefix);
-        const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : '';
+        const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3"].includes(body);
+        const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1);
         const pushname = m.pushName || "No Name";
