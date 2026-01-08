@@ -50,7 +50,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroup = from.endsWith("@g.us");
         const botNumber = config.botNumber + "@s.whatsapp.net";
         const isBot = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
+        const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+        const isPublic = wily.public;
         
+        if (!isPublic && !isBot) return;
+
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
