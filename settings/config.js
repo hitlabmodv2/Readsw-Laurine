@@ -21,7 +21,7 @@ const config = {
         packname: 'laurine-wabot',
         description: "this script was created by KyuuRzy",
         author: 'https://www.kyuurzy.tech',
-        footer: "shenń, yes 1437`"
+        footer: "LAURINE~MD"
     },
     newsletter: {
         name: "kyuurzy-wb",

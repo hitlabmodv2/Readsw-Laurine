@@ -251,24 +251,33 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const formattedTotalMem = formatSize(totalMem);
                 let timestamp = speed()
                 let latensi = speed() - timestamp
-                let menu = `
- ▢ speed: ${latensi.toFixed(4)} s
- ▢ runtime: ${runtime(process.uptime())}
- ▢ RAM: ${formattedUsedMem} / ${formattedTotalMem}
-                
-command:
- ▢ ${prefix}tagall
- ▢ ${prefix}get
- ▢ ${prefix}insp
- ▢ ${prefix}csesi
- ▢ ${prefix}exec
- ▢ ${prefix}eval
- ▢ ${prefix}reactionsw
- ▢ ${prefix}addemoji
- ▢ ${prefix}delemoji
- ▢ ${prefix}listemoji
- ▢ ${prefix}ping
- ▢ ${prefix}mesinfo`
+                let menu = `╭━━━『 *LAURINE BOT* 』━━━┄
+┃
+┃ 🚀 *Speed:* ${latensi.toFixed(4)} s
+┃ ⏳ *Runtime:* ${runtime(process.uptime())}
+┃ 📊 *RAM:* ${formattedUsedMem} / ${formattedTotalMem}
+┃
+┣━━『 *OWNER MENU* 』━━┄
+┃ ▢ ${prefix}eval
+┃ ▢ ${prefix}exec
+┃ ▢ ${prefix}csesi
+┃
+┣━━『 *GROUP MENU* 』━━┄
+┃ ▢ ${prefix}tagall
+┃
+┣━━『 *TOOLS MENU* 』━━┄
+┃ ▢ ${prefix}get
+┃ ▢ ${prefix}insp
+┃ ▢ ${prefix}ping
+┃ ▢ ${prefix}mesinfo
+┃
+┣━━『 *UTILITIES* 』━━┄
+┃ ▢ ${prefix}reactionsw
+┃ ▢ ${prefix}addemoji
+┃ ▢ ${prefix}delemoji
+┃ ▢ ${prefix}listemoji
+┃
+╰━━━━━━━━━━━━━━━━━━┄`
                     await client.sendMessage(m.chat, {
                         interactiveMessage: {
                             title: menu,
