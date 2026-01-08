@@ -1,7 +1,6 @@
 node_modules/
 sessions/
-.env
-*.log
-tmp/
-*.tmp
-.DS_Store
+.git/
+package-lock.json
+.upm/
+attached_assets/
