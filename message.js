@@ -94,9 +94,42 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isBotAdmins = m?.isGroup ? groupAdmins.includes(botNumber) : false;
         const isAdmins = m?.isGroup ? groupAdmins.includes(m.sender) : false;
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
+        const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
-        // Anti Status Mention Logic
+        // Anti Status Mention Logic (Decoded Version)
         if (isGroup && wily.antitagsw) {
+            if (m.mtype === 'groupStatusMentionMessage') {
+                if (isAdmins || isOwner) {
+                    // Admins/Owners are free
+                } else {
+                    try {
+                        // Warning
+                        await client.sendMessage(from, {
+                            text: ````「 Tag Status Terdeteksi 」```\n\n@${sender.split('@')[0]} KAMU MENGTAG STATUSNYA\n> KAMU DI KICK😹`,
+                            contextInfo: { mentionedJid: [sender] }
+                        }, { quoted: m });
+
+                        // Delete
+                        if (isBotAdmins) {
+                            await client.sendMessage(from, {
+                                delete: {
+                                    remoteJid: from,
+                                    fromMe: false,
+                                    id: m.id,
+                                    participant: sender
+                                }
+                            });
+                            // Kick
+                            await client.groupParticipantsUpdate(from, [sender], 'remove');
+                        }
+                        return; // Stop processing
+                    } catch (e) {
+                        console.log(chalk.red('[AntiTagSW] Error:'), e);
+                    }
+                }
+            }
+
+            // Fallback for regular text-based tags if mtype is not enough
             const contextMentions = m.msg?.contextInfo?.mentionedJid || [];
             const quotedMentions = m.quoted?.mentionedJid || [];
             const directMentions = m.mentionedJid || [];
