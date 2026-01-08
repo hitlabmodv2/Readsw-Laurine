@@ -228,7 +228,9 @@ const clientstart = async() => {
         }
     });
 
-    client.public = config().status.public
+    // Load public status from wily.json
+    const wilyData = JSON.parse(fs.readFileSync('./settings/wily.json'));
+    client.public = wilyData.public !== undefined ? wilyData.public : true;
     
     client.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update

@@ -272,6 +272,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mesinfo
 ┃
 ┣━━『 *UTILITIES* 』━━┄
+┃ ▢ ${prefix}public
+┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
@@ -450,6 +452,42 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 msg += `┃\n`;
                 msg += `╰━━━━━━━━━━━━━━━┄`;
                 reply(msg);
+            }
+            break;
+            case "public": {
+                if (!isBot) return;
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.public = true;
+                    client.public = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Public Mode berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.public = false;
+                    client.public = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Public Mode berhasil dimatikan (Self Mode) ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "terminal": {
+                if (!isBot) return;
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.terminal = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Terminal Pairing berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.terminal = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Terminal Pairing berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
             }
             break;
             case "get":{
