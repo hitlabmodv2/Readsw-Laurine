@@ -288,28 +288,13 @@ command:
                                             title: "shennminè",
                                             sections: [
                                                 {
-                                                    title: "# X - the best",
-                                                    highlight_label: "label",
+                                                    title: "# SERVER INFO",
+                                                    highlight_label: "HOT",
                                                     rows: [
                                                         {
-                                                            title: "Ping Server",
-                                                            description: "Cek kecepatan respon & info server",
+                                                            title: "Ping Server ⚡",
+                                                            description: "Cek kecepatan respon & info server akurat ✅",
                                                             id: "ping"
-                                                        },
-                                                        {
-                                                            title: "@dittsans", 
-                                                            description: "b!cth",
-                                                            id: "row_1"
-                                                        },
-                                                        { 
-                                                            title: "@kyuucode",
-                                                            description: "sh3nnmine",
-                                                            id: "row_2"
-                                                        },
-                                                        { 
-                                                            title: "@devorsixcore",
-                                                            description: "rock and roll",
-                                                            id: "row_3" 
                                                         }
                                                     ]
                                                 }
