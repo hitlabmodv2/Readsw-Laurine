@@ -48,8 +48,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const prefix = prefixRegex.test(body) ? body.match(prefixRegex)[0] : '.';
         const from = m.key.remoteJid;
         const isGroup = from.endsWith("@g.us");
-        const botNumber = await client.decodeJid(client.user.id);
-        const isBot = botNumber.includes(senderNumber)
+        const botNumber = config.botNumber + "@s.whatsapp.net";
+        const isBot = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
