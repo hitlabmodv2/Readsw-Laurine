@@ -267,24 +267,17 @@ const clientstart = async() => {
                 if (anu.action === 'add') {
                     let welcomeMsg = `Welcome @${num.split("@")[0]} to ${metadata.subject}\n\nSalam kenal ya!`
                     await client.sendMessage(anu.id, {
-                        interactiveMessage: {
-                            header: {
-                                hasMediaAttachment: true,
-                                imageMessage: (await client.prepareWAMessageMedia({ image: { url: ppuser } }, { upload: client.waUploadToServer })).imageMessage
-                            },
-                            body: { text: welcomeMsg },
-                            footer: { text: "Laurine Bot" },
-                            nativeFlowMessage: {
-                                buttons: [{
-                                    name: "quick_reply",
-                                    buttonParamsJson: JSON.stringify({
-                                        display_text: "Salam kenal",
-                                        id: "salam_kenal"
-                                    })
-                                }]
-                            }
-                        }
-                    }, { mentions: [num] })
+                        image: { url: ppuser },
+                        caption: welcomeMsg,
+                        footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "salam_kenal",
+                            buttonText: { displayText: "Salam kenal" },
+                            type: 1
+                        }],
+                        headerType: 4,
+                        mentions: [num]
+                    })
                 } else if (anu.action === 'remove') {
                     let goodbyeMsg = `Goodbye @${num.split("@")[0]}\n\nSemoga harimu menyenangkan!`
                     await client.sendMessage(anu.id, {
