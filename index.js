@@ -200,11 +200,8 @@ const clientstart = async() => {
                 }
                 return;
             }
-            if (!client.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-            if (mek.key.id.startsWith('SH3NN-') && mek.key.id.length === 12) return
             if (mek.key.remoteJid === 'status@broadcast') return // Prevent smsg and message.js processing for status
             const m = await smsg(client, mek, store)
-            client.public = JSON.parse(fs.readFileSync('./settings/wily.json')).public
             require("./message")(client, m, chatUpdate, store)
         } catch (err) {
             console.log(err)

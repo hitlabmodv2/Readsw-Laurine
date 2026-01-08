@@ -53,6 +53,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
         const isPublic = wily.public;
         
+        // Log for debugging
+        if (body.startsWith(prefix)) {
+            console.log(`[DEBUG] Command: ${body}, Sender: ${sender}, isPublic: ${isPublic}, isBot: ${isBot}`);
+        }
+
         if (!isPublic && !isBot) return;
 
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
