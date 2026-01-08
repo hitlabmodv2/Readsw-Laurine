@@ -3,5 +3,6 @@
   "public": false,
   "terminal": true,
   "welcome": true,
-  "goodbye": true
+  "goodbye": true,
+  "antitagsw": true
 }

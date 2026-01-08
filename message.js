@@ -95,6 +95,20 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isAdmins = m?.isGroup ? groupAdmins.includes(m.sender) : false;
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         
+        // Anti Status Mention Logic
+        if (isGroup && wily.antitagsw && m.mentionedJid && m.mentionedJid.includes('status@broadcast')) {
+            if (!isAdmins && !isBot) {
+                try {
+                    await client.sendMessage(from, { text: `⚠️ Anti Status Mention detected! @${sender.split('@')[0]} dilarang melakukan status mention.`, mentions: [sender] });
+                    if (isBotAdmins) {
+                        await client.sendMessage(from, { delete: m.key });
+                    }
+                } catch (e) {
+                    console.log(chalk.red('Error in AntiTagSW:'), e);
+                }
+            }
+        }
+        
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd || isBot) {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Message`));
@@ -283,6 +297,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}public
 ┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
+┃ ▢ ${prefix}antitagsw
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
 ┃ ▢ ${prefix}listemoji
@@ -384,6 +399,23 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     wily.reactionsw = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "antitagsw": {
+                if (!isBot) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    wily.antitagsw = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Anti Tag Status (SW) berhasil diaktifkan ✅');
+                } else if (text.toLowerCase() === 'off') {
+                    wily.antitagsw = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Anti Tag Status (SW) berhasil dimatikan ❌');
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
