@@ -22,7 +22,16 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             m.mtype === "buttonsResponseMessage" ? m.message.buttonsResponseMessage.selectedButtonId :
             m.mtype === "listResponseMessage" ? m.message.listResponseMessage.singleSelectReply.selectedRowId :
             m.mtype === "templateButtonReplyMessage" ? m.message.templateButtonReplyMessage.selectedId :
-            m.mtype === "interactiveResponseMessage" ? JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id :
+            m.mtype === "interactiveResponseMessage" ? (
+                (() => {
+                    try {
+                        const params = JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson);
+                        return params.id || m.text;
+                    } catch (e) {
+                        return m.text;
+                    }
+                })()
+            ) :
             m.mtype === "templateButtonReplyMessage" ? m.msg.selectedId :
             m.mtype === "messageContextInfo" ? m.message.buttonsResponseMessage?.selectedButtonId ||
             m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text : ""
