@@ -203,7 +203,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "ping": {
-                if (!isBot) return;
                 const totalMem = os.totalmem();
                 const freeMem = os.freemem();
                 const usedMem = totalMem - freeMem;
@@ -252,7 +251,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "menu":{
-                if (!isBot) return
                 const totalMem = os.totalmem();
                 const freeMem = os.freemem();
                 const usedMem = totalMem - freeMem;
