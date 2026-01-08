@@ -6,6 +6,10 @@ const config = {
     setPair: "K1UU1212",
     thumbUrl: "https://github.com/kiuur.png",
     session: "sessions",
+    status: {
+        public: true,
+        terminal: true
+    },
     message: {
         owner: "no, this is for owners only",
         group: "this is for groups only",

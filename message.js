@@ -51,14 +51,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const botNumber = await client.decodeJid(client.user.id);
         const isBot = botNumber.includes(senderNumber)
         
-        // Load public status from wily.json
-        const wilyData = JSON.parse(fs.readFileSync('./settings/wily.json'));
-        const isPublic = wilyData.public !== undefined ? wilyData.public : true;
-        
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
         const command = isCmd ? (body.startsWith(prefix) ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : body.toLowerCase()) : '';
-
-        if (!isPublic && !isBot && isCmd) return;
         const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1);
         const pushname = m.pushName || "No Name";
@@ -93,7 +87,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
-            if (isCmd || isBot || isPublic) {
+            if (isCmd || isBot) {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Message`));
                 console.log(
                     `▢ Tanggal: ${new Date().toLocaleString()}\n` +
@@ -278,8 +272,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mesinfo
 ┃
 ┣━━『 *UTILITIES* 』━━┄
-┃ ▢ ${prefix}public
-┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
@@ -458,42 +450,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 msg += `┃\n`;
                 msg += `╰━━━━━━━━━━━━━━━┄`;
                 reply(msg);
-            }
-            break;
-            case "public": {
-                if (!isBot) return;
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
-                    wily.public = true;
-                    client.public = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Public Mode berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
-                    wily.public = false;
-                    client.public = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Public Mode berhasil dimatikan (Self Mode) ❌');
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
-            }
-            break;
-            case "terminal": {
-                if (!isBot) return;
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
-                    wily.terminal = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Terminal Pairing berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
-                    wily.terminal = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Terminal Pairing berhasil dimatikan ❌');
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
             }
             break;
             case "get":{
