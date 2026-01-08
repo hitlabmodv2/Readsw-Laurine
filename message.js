@@ -97,14 +97,12 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         // Anti Status Mention Logic
         if (isGroup && wily.antitagsw) {
-            // Comprehensive mention detection
             const contextMentions = m.msg?.contextInfo?.mentionedJid || [];
             const quotedMentions = m.quoted?.mentionedJid || [];
             const directMentions = m.mentionedJid || [];
             const allMentions = [...new Set([...directMentions, ...contextMentions, ...quotedMentions])];
             
-            // Check body for manual @0 or @status@broadcast tags
-            const bodyText = (m.text || m.body || '').toLowerCase();
+            const bodyText = (m.body || m.text || '').toLowerCase();
             const hasManualTag = bodyText.includes('@0') || bodyText.includes('@status@broadcast');
             
             const isStatusMention = allMentions.some(jid => 
@@ -113,27 +111,23 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 jid.startsWith('0@')
             ) || hasManualTag;
 
-            // Group mention detection (@all, @everyone)
             const isGroupMention = allMentions.some(jid => jid.endsWith('@g.us')) || 
                                  bodyText.includes('@all') || bodyText.includes('@everyone');
             
             if ((isStatusMention || isGroupMention) && !isAdmins && !isBot) {
                 try {
                     const reason = isStatusMention ? 'status mention' : 'group mention';
-                    console.log(chalk.red(`[AntiTagSW] DETECTED: ${reason} from ${pushname} in ${groupName}`));
+                    console.log(chalk.red(`[AntiTagSW] DETECTED: ${reason} from ${m.sender} in ${m.chat}`));
                     
-                    // Simple warning
-                    await client.sendMessage(from, { 
-                        text: `🛡️ *ANTI ${reason.toUpperCase()}*\n\n⚠️ @${sender.split('@')[0]}, dilarang melakukan tag tersebut!`, 
-                        mentions: [sender] 
+                    await client.sendMessage(m.chat, { 
+                        text: `🛡️ *ANTI ${reason.toUpperCase()}*\n\n⚠️ @${m.sender.split('@')[0]}, dilarang melakukan tag tersebut!`, 
+                        mentions: [m.sender] 
                     });
                     
-                    // Force delete if bot is admin
                     if (isBotAdmins) {
-                        await client.sendMessage(from, { delete: m.key });
+                        await client.sendMessage(m.chat, { delete: m.key });
                     }
-                    
-                    return; // Stop processing
+                    return; 
                 } catch (e) {
                     console.log(chalk.red('[AntiTagSW] Error:'), e);
                 }
