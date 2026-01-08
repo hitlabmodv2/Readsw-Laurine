@@ -284,7 +284,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                         interactiveMessage: {
                             title: menu,
                             footer: config.settings.footer,
-                            thumbnail: "https://github.com/kiuur.png",
+                            thumbnail: fs.readFileSync('./w-shennmine/lib/media/anime_girl.png'),
                             nativeFlowMessage: {
                                 buttons: [
                                     {
@@ -488,6 +488,21 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 msg += `┃\n`;
                 msg += `╰━━━━━━━━━━━━━━━┄`;
                 reply(msg);
+            }
+            break;
+            case "setppbot": {
+                if (!isBot) return;
+                if (!quoted) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
+                if (!/image/.test(mime)) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
+                try {
+                    let media = await client.downloadAndSaveMediaMessage(quoted);
+                    await client.updateProfilePicture(client.user.id, { url: media });
+                    fs.unlinkSync(media);
+                    reply("Berhasil mengganti foto profil bot ✅");
+                } catch (e) {
+                    console.log(e);
+                    reply("Gagal mengganti foto profil bot ❌");
+                }
             }
             break;
             case "get":{
