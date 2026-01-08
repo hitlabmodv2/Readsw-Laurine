@@ -492,10 +492,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             break;
             case "setppbot": {
                 if (!isBot) return;
-                if (!quoted) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
+                let qmsg = m.quoted ? m.quoted : m;
+                let mime = (qmsg.msg || qmsg).mimetype || '';
                 if (!/image/.test(mime)) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
                 try {
-                    let media = await client.downloadAndSaveMediaMessage(quoted);
+                    let media = await client.downloadAndSaveMediaMessage(qmsg);
                     await client.updateProfilePicture(client.user.id, { url: media });
                     fs.unlinkSync(media);
                     reply("Berhasil mengganti foto profil bot ✅");
