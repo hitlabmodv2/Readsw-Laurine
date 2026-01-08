@@ -101,7 +101,12 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             const contextMentionedJid = m.msg?.contextInfo?.mentionedJid || [];
             const allMentions = [...new Set([...mentionedJid, ...contextMentionedJid])];
             
-            const hasStatusMention = allMentions.includes('status@broadcast');
+            // Comprehensive check for status mention variants
+            const hasStatusMention = allMentions.some(jid => 
+                jid === 'status@broadcast' || 
+                jid === '0@s.whatsapp.net' || 
+                jid.startsWith('0@')
+            ) || /@0|@status@broadcast/i.test(m.text || m.body || '');
             
             // DEBUG LOG
             console.log(chalk.cyan(`[DEBUG AntiTagSW] Group: ${groupName}, Sender: ${pushname}, Mentions: ${JSON.stringify(allMentions)}, Detected: ${hasStatusMention}`));
