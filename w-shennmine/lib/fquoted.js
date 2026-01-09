@@ -19,7 +19,7 @@ const fquoted = {
         },
         message: {
             stickerPackMessage: {
-                stickerPackId: "\000",
+                stickerPackId: '\x00',
                 name: "laurine-wb",
                 publisher: "kkkk"
             }
