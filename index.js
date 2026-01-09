@@ -330,9 +330,6 @@ const clientstart = async() => {
                     let welcomeMsg = `${dataRealtime}
 
 ╭━━━━━━━━━━━━━━━━━━┄
-┃ ${wish}
-┃ ${randomQuote}
-┃
 ┃ ${joinLabel}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
@@ -349,14 +346,6 @@ const clientstart = async() => {
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'remove') {
-                    const goodbyeQuotes = [
-                        `Terima kasih sudah pernah mampir! ✨`,
-                        `Sampai jumpa di lain kesempatan! 👋`,
-                        `Semoga sukses di luar sana! 🚀`,
-                        `Kenanganmu akan selalu ada! 🍃`
-                    ];
-                    const randomQuote = goodbyeQuotes[Math.floor(Math.random() * goodbyeQuotes.length)];
-
                     let leaveLabel = 'User keluar sendiri 👋';
                     if (anu.author && anu.author !== num) {
                         leaveLabel = `👤 Dikick oleh admin : @${anu.author.split('@')[0]} 🚫`;
@@ -380,9 +369,6 @@ const clientstart = async() => {
                     let goodbyeMsg = `${dataRealtimeOut}
 
 ╭━━━━━━━━━━━━━━━━━━┄
-┃ ${wish}
-┃ ${randomQuote}
-┃
 ┃ ${leaveLabel}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
