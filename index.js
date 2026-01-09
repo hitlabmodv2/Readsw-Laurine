@@ -241,13 +241,9 @@ const clientstart = async() => {
         if (!wily.notifgc) return
         
         for (const group of update) {
-            if (group.desc) {
+            if (group.desc !== undefined) {
                 try {
-                    const metadata = await client.groupMetadata(group.id)
                     const now = require('moment-timezone')().tz('Asia/Jakarta').locale('id')
-                    
-                    // Di Baileys, author perubahan biasanya ada di update atau bisa ditarik dari metadata jika baru saja berubah
-                    // Namun untuk deteksi real-time yang akurat, kita gunakan author dari update jika tersedia
                     const author = group.author || 'Seseorang';
                     
                     const descMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
@@ -260,7 +256,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *DESKRIPSI BARU* 』━━┄
 ┃
-┃ ${group.desc}
+┃ ${group.desc || 'Deskripsi dihapus'}
 ┃
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
