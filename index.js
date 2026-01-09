@@ -307,6 +307,11 @@ const clientstart = async() => {
                     ];
                     const randomQuote = welcomeQuotes[Math.floor(Math.random() * welcomeQuotes.length)];
 
+                    let joinLabel = 'Bergabung via tautan undangan';
+                    if (anu.author && anu.author !== num) {
+                        joinLabel = `Bergabung diundang oleh @${anu.author.split('@')[0]}`;
+                    }
+
                     const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Hallo Selamat Datang :* @${num.split('@')[0]}
 ┃ 👤 *Wishes :* ${ucapan} ${emo}
@@ -321,20 +326,16 @@ const clientstart = async() => {
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
-
-                    let joinMethod = 'via tautan undangan';
-                    if (anu.author && anu.author !== num) {
-                        joinMethod = `diundang oleh @${anu.author.split('@')[0]}`;
-                    }
                     
                     let welcomeMsg = `${dataRealtime}
 
 ╭━━━━━━━━━━━━━━━━━━┄
 ┃ ${wish}
 ┃ ${randomQuote}
-╰━━━━━━━━━━━━━━━━━━┄
+┃
+┃ ${joinLabel}
+╰━━━━━━━━━━━━━━━━━━┄`;
 
-Bergabung ${joinMethod}`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
@@ -356,9 +357,9 @@ Bergabung ${joinMethod}`;
                     ];
                     const randomQuote = goodbyeQuotes[Math.floor(Math.random() * goodbyeQuotes.length)];
 
-                    let leaveMethod = 'keluar sendiri';
+                    let leaveLabel = 'User keluar sendiri';
                     if (anu.author && anu.author !== num) {
-                        leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`;
+                        leaveLabel = `User dikick oleh @${anu.author.split('@')[0]}`;
                     }
 
                     const dataRealtimeOut = `╭━━━『 *NOTIFIKASI* 』━━━┄
@@ -381,9 +382,10 @@ Bergabung ${joinMethod}`;
 ╭━━━━━━━━━━━━━━━━━━┄
 ┃ ${wish}
 ┃ ${randomQuote}
-╰━━━━━━━━━━━━━━━━━━┄
+┃
+┃ ${leaveLabel}
+╰━━━━━━━━━━━━━━━━━━┄`;
 
-User ${leaveMethod}`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
