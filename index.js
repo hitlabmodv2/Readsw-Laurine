@@ -282,15 +282,24 @@ const clientstart = async() => {
                 const now = moment().tz('Asia/Jakarta').locale('id');
                 const hour = now.hour();
                 let ucapan = 'Selamat Malam';
-                if (hour >= 4 && hour < 10) ucapan = 'Selamat Pagi';
-                else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
-                else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
+                let emo = '🌙';
+                if (hour >= 4 && hour < 10) {
+                    ucapan = 'Selamat Pagi';
+                    emo = '☀️';
+                } else if (hour >= 10 && hour < 15) {
+                    ucapan = 'Selamat Siang';
+                    emo = '🌤️';
+                } else if (hour >= 15 && hour < 18) {
+                    ucapan = 'Selamat Sore';
+                    emo = '🌇';
+                }
 
                 const dataRealtime = `
 (${ucapan}) 👋
 
 ╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Selamat datang :* @${num.split('@')[0]}
+┃ 👤 *Selamat :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
@@ -298,9 +307,9 @@ const clientstart = async() => {
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
-┃ 👮 *Admin :* ${groupAdmins} Admin
-┃ 👥 *Member :* ${metadata.participants.length} Anggota
-┃ 🕒 *Grup Dibuat:* ${groupCreation}
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
+┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
                 if (anu.action === 'add') {
@@ -333,6 +342,7 @@ const clientstart = async() => {
 
 ╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Keluar :* @${num.split('@')[0]}
+┃ 👤 *Selamat :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
@@ -340,9 +350,9 @@ const clientstart = async() => {
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
-┃ 👮 *Admin :* ${groupAdmins} Admin
-┃ 👥 *Member :* ${metadata.participants.length} Anggota
-┃ 🕒 *Grup Dibuat:* ${groupCreation}
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
+┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
                     let goodbyeMsg = `${dataRealtimeOut}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`;
