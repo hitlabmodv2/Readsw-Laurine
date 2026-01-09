@@ -135,6 +135,13 @@ const clientstart = async() => {
                 Object.keys(mek.message)[0] === 'ephemeralMessage' ?
                 mek.message.ephemeralMessage.message : mek.message
             
+            // Handle group description updates from messages if events are not firing
+            const mtype = Object.keys(mek.message)[0];
+            if (mtype === 'protocolMessage' && mek.message.protocolMessage.type === 14) {
+                 // Logic for catching desc change from protocol messages could be complex
+                 // but typically groups.update should fire.
+            }
+
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
                 const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (wily.reactionsw) {
@@ -265,7 +272,7 @@ const clientstart = async() => {
                         mentions: [author]
                     })
                 } catch (err) {
-                    console.log(err)
+                    console.log('Error in groups.update:', err)
                 }
             }
         }
@@ -445,6 +452,7 @@ const clientstart = async() => {
             console.log(err)
         }
     })
+
     
     client.deleteMessage = async (chatId, key) => {
         try {
