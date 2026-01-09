@@ -108,9 +108,21 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd) {
+                const now = moment().tz("Asia/Jakarta");
+                const hari = now.format("dddd");
+                const tanggal = now.format("DD MMM YYYY");
+                const waktu = now.format("HH:mm:ss");
+                let ucapanLog = 'Malam';
+                const hourLog = now.hour();
+                if (hourLog >= 4 && hourLog < 10) ucapanLog = 'Pagi';
+                else if (hourLog >= 10 && hourLog < 15) ucapanLog = 'Siang';
+                else if (hourLog >= 15 && hourLog < 18) ucapanLog = 'Sore';
+
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Command`));
                 console.log(
-                    `▢ 📅 Tanggal  : ${new Date().toLocaleString()}\n` +
+                    `▢ Hari        : ${hari}\n` +
+                    `▢ 📅 Tanggal  : ${tanggal}\n` +
+                    `▢ Waktu       : ${waktu} ${ucapanLog}\n` +
                     `▢ 🚀 Command  : ${command}\n` +
                     `▢ 📩 Pesan    : Ke Kirim\n` +
                     `▢ 👤 Pengirim : ${pushname}\n` +
@@ -281,7 +293,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
                 else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
 
-                let menu = `Halo @${sender.split('@')[0]}, ${ucapan}! 👋\n\n`
+                let menu = `Halo (@${sender.split('@')[0]}), ${ucapan}! 👋\n\n`
                 menu += `╭━━━『 *LAURINE BOT* 』━━━┄
 ┃
 ┃ 🚀 *Speed:* ${latensi.toFixed(4)} s
