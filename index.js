@@ -327,7 +327,14 @@ const clientstart = async() => {
                         joinMethod = `diundang oleh @${anu.author.split('@')[0]}`;
                     }
                     
-                    let welcomeMsg = `${dataRealtime}\n\n${wish}\n${randomQuote}\n\nBergabung ${joinMethod}\nLaurine Bot`;
+                    let welcomeMsg = `${dataRealtime}
+
+╭━━━━━━━━━━━━━━━━━━┄
+┃ ${wish}
+┃ ${randomQuote}
+╰━━━━━━━━━━━━━━━━━━┄
+
+Bergabung ${joinMethod}`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
@@ -369,7 +376,14 @@ const clientstart = async() => {
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
-                    let goodbyeMsg = `${dataRealtimeOut}\n\n${wish}\n${randomQuote}\n\nUser ${leaveMethod}\nLaurine Bot`;
+                    let goodbyeMsg = `${dataRealtimeOut}
+
+╭━━━━━━━━━━━━━━━━━━┄
+┃ ${wish}
+┃ ${randomQuote}
+╰━━━━━━━━━━━━━━━━━━┄
+
+User ${leaveMethod}`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
