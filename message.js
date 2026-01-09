@@ -552,6 +552,9 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 }
             }
             break;
+            case "delemojibanyak": {
+                if (!isBot) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                 const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
                 let toDelete = text.match(emojiRegex);
