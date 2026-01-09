@@ -294,11 +294,8 @@ const clientstart = async() => {
                     emo = '🌇';
                 }
 
-                const dataRealtime = `
-(${ucapan}) 👋
-
-╭━━━『 *NOTIFIKASI* 』━━━┄
-┃ 👤 *Selamat datang :* @${num.split('@')[0]}
+                const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
+┃ 👤 *Hallo Selamat Datang :* @${num.split('@')[0]}
 ┃ 👤 *Selamat :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
@@ -337,11 +334,8 @@ const clientstart = async() => {
                         leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`;
                     }
 
-                    const dataRealtimeOut = `
-(${ucapan}) 👋
-
-╭━━━『 *NOTIFIKASI* 』━━━┄
-┃ 👤 *Keluar :* @${num.split('@')[0]}
+                    const dataRealtimeOut = `╭━━━『 *NOTIFIKASI* 』━━━┄
+┃ 👤 *Hallo Selamat Tinggal :* @${num.split('@')[0]}
 ┃ 👤 *Selamat :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
