@@ -110,13 +110,13 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             if (isCmd) {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Command`));
                 console.log(
-                    `▢ Tanggal: ${new Date().toLocaleString()}\n` +
-                    `▢ Command: ${command}\n` +
-                    `▢ Pesan: ${m.body || m.mtype}\n` +
-                    `▢ Pengirim: ${pushname}\n` +
-                    `▢ JID: ${senderNumber}\n` +
-                    `▢ isPublic: ${isPublic}\n` +
-                    `▢ isBot: ${isBot}\n` +
+                    `▢ 📅 Tanggal  : ${new Date().toLocaleString()}\n` +
+                    `▢ 🚀 Command  : ${command}\n` +
+                    `▢ 📩 Pesan    : Ke Kirim\n` +
+                    `▢ 👤 Pengirim : ${pushname}\n` +
+                    `▢ 🆔 JID      : ${senderNumber}\n` +
+                    `▢ 🔓 isPublic : ${isPublic}\n` +
+                    `▢ 🤖 isBot    : ${isBot}\n` +
                     `----------------------------------`
                 );
             }
