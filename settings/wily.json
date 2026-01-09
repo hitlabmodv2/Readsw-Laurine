@@ -2,9 +2,9 @@
   "reactionsw": true,
   "public": true,
   "terminal": true,
-  "welcome": true,
-  "goodbye": true,
+  "welcome": false,
+  "goodbye": false,
   "autotyping": false,
   "autorecord": true,
-  "notifgc": false
+  "notifgc": true
 }

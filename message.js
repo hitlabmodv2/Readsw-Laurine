@@ -461,15 +461,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'on') {
-                    if (wily.notifgc) return reply(`Fitur Notif GC sudah aktif.`);
+                    if (wily.notifgc) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot sekarang akan mengirimkan notifikasi setiap ada perubahan di grup.`);
                     wily.notifgc = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Notif GC berhasil diaktifkan ✅');
+                    reply('Fitur Notif GC berhasil diaktifkan ✅\n\n*Penjelasan:* Bot sekarang akan mengirimkan notifikasi setiap ada perubahan di grup.');
                 } else if (action === 'off') {
-                    if (!wily.notifgc) return reply(`Fitur Notif GC sudah mati.`);
+                    if (!wily.notifgc) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.`);
                     wily.notifgc = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Notif GC berhasil dimatikan ❌');
+                    reply('Fitur Notif GC berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.');
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
@@ -777,16 +777,17 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isAdmins && !isOwner) return reply(config.message.admin);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
-                    if (wily.welcome) return reply("Fitur welcome sudah aktif sebelumnya.");
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.welcome) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru yang bergabung.`);
                     wily.welcome = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur welcome berhasil diaktifkan ✅");
-                } else if (text.toLowerCase() === 'off') {
-                    if (!wily.welcome) return reply("Fitur welcome sudah mati sebelumnya.");
+                    reply("Fitur welcome berhasil diaktifkan ✅\n\n*Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru yang bergabung.");
+                } else if (action === 'off') {
+                    if (!wily.welcome) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.`);
                     wily.welcome = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur welcome berhasil dimatikan ❌");
+                    reply("Fitur welcome berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.");
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
@@ -798,16 +799,17 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isAdmins && !isOwner) return reply(config.message.admin);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
-                    if (wily.goodbye) return reply("Fitur goodbye sudah aktif sebelumnya.");
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.`);
                     wily.goodbye = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur goodbye berhasil diaktifkan ✅");
-                } else if (text.toLowerCase() === 'off') {
-                    if (!wily.goodbye) return reply("Fitur goodbye sudah mati sebelumnya.");
+                    reply("Fitur goodbye berhasil diaktifkan ✅\n\n*Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.");
+                } else if (action === 'off') {
+                    if (!wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.`);
                     wily.goodbye = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur goodbye berhasil dimatikan ❌");
+                    reply("Fitur goodbye berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.");
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
