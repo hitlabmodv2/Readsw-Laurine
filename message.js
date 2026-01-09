@@ -328,6 +328,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
+┃ ▢ ${prefix}typing
+┃ ▢ ${prefix}record
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
 ┃ ▢ ${prefix}listemoji
