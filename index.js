@@ -135,11 +135,40 @@ const clientstart = async() => {
                 Object.keys(mek.message)[0] === 'ephemeralMessage' ?
                 mek.message.ephemeralMessage.message : mek.message
             
-            // Handle group description updates from messages if events are not firing
+            // Auto detect group description change from system messages
             const mtype = Object.keys(mek.message)[0];
             if (mtype === 'protocolMessage' && mek.message.protocolMessage.type === 14) {
-                 // Logic for catching desc change from protocol messages could be complex
-                 // but typically groups.update should fire.
+                 // Logic for catching desc change
+            }
+            
+            // Detection via group description system message
+            if (mtype === 'groupNotificationMessage' || mek.message?.stubType === 24) {
+                const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
+                if (wily.notifgc) {
+                    const from = mek.key.remoteJid
+                    const author = mek.key.participant || mek.participant || 'Seseorang'
+                    const now = require('moment-timezone')().tz('Asia/Jakarta').locale('id')
+                    const groupMetadata = await client.groupMetadata(from)
+                    
+                    const descMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
+┃
+┃ 📝 *Info:* Deskripsi Grup Berubah
+┃ 👤 *Oleh:* @${author.split('@')[0]}
+┃ 📅 *Hari:* ${now.format('dddd')}
+┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *DESKRIPSI BARU* 』━━┄
+┃
+┃ ${groupMetadata.desc || 'Deskripsi dihapus'}
+┃
+╰━━━━━━━━━━━━━━━━━━┄`;
+
+                    await client.sendMessage(from, {
+                        text: descMsg,
+                        mentions: [author]
+                    })
+                }
             }
 
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
