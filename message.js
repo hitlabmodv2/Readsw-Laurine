@@ -121,15 +121,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Command`));
                 console.log(
                     `▢ 📅 Hari      : ${hari}\n` +
-                    `▢ 🗓️ Tanggal   : ${tanggal}\n` +
+                    `▢ 🗓️  Tanggal   : ${tanggal}\n` +
                     `▢ ⌚ Waktu     : ${waktu} ${ucapanLog}\n` +
                     `▢ 🚀 Command   : ${command}\n` +
                     `▢ 📩 Pesan     : Ke Kirim\n` +
-                    `▢ 🔓 MODE      : ${isPublic ? 'Public' : 'Self'}\n` +
                     `▢ 👤 Pengirim  : ${pushname}\n` +
                     `▢ 🆔 JID       : ${senderNumber}\n` +
                     `▢ 👑 Owner     : ${isOwner ? 'Ya ✅' : 'Tidak ❌'}\n` +
                     `▢ 🤖 Bot       : ${isBot ? 'Ya ✅' : 'Tidak ❌'}\n` +
+                    `▢ 🔓 isPublic  : ${isPublic ? 'Ya ✅' : 'Tidak ❌'}\n` +
                     `----------------------------------`
                 );
             }
