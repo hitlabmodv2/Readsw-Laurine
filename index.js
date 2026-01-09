@@ -264,8 +264,13 @@ const clientstart = async() => {
         if (!wily.goodbye && anu.action === 'remove') return
         
         try {
+            const moment = require('moment-timezone');
             let metadata = await client.groupMetadata(anu.id)
             let participants = anu.participants
+            const groupOwner = metadata.owner || metadata.participants.find(p => p.admin === 'superadmin')?.id || '';
+            const groupAdmins = metadata.participants.filter(p => p.admin === 'admin' || p.admin === 'superadmin').length;
+            const groupCreation = moment(metadata.creation * 1000).tz('Asia/Jakarta').locale('id').format('DD MMMM YYYY, HH:mm:ss');
+            
             for (let num of participants) {
                 let ppuser
                 try {
@@ -274,43 +279,55 @@ const clientstart = async() => {
                     ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
                 }
 
+                const now = moment().tz('Asia/Jakarta').locale('id');
+                const hour = now.hour();
+                let ucapan = 'Selamat Malam';
+                if (hour >= 4 && hour < 10) ucapan = 'Selamat Pagi';
+                else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
+                else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
+
+                const dataRealtime = `
+${ucapan} 👋
+
+╭━━━『 *NOTIFIKASI* 』━━━┄
+┃ 👤 *User:* @${num.split('@')[0]}
+┃ 📅 *Hari:* ${now.format('dddd')}
+┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *INFO GRUP* 』━━┄
+┃ 🏫 *Grup:* ${metadata.subject}
+┃ 👑 *Owner:* @${groupOwner.split('@')[0]}
+┃ 👮 *Admin:* ${groupAdmins} Admin
+┃ 👥 *Member:* ${metadata.participants.length} Anggota
+┃ 🕒 *Dibuat:* ${groupCreation}
+╰━━━━━━━━━━━━━━━━━━┄`;
+
                 if (anu.action === 'add') {
-                    let joinMethod = 'via tautan undangan'
+                    let joinMethod = 'via tautan undangan';
                     if (anu.author && anu.author !== num) {
-                        joinMethod = `diundang oleh @${anu.author.split('@')[0]}`
+                        joinMethod = `diundang oleh @${anu.author.split('@')[0]}`;
                     }
                     
-                    let welcomeMsg = `Welcome @${num.split("@")[0]} to ${metadata.subject}\n\nBergabung ${joinMethod}\nSalam kenal ya!`
+                    let welcomeMsg = `Welcome to *${metadata.subject}*! 🎊\n${dataRealtime}\n\nBergabung ${joinMethod}\nSemoga betah ya!`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
                         footer: "Laurine Bot",
-                        buttons: [{
-                            buttonId: "salam_kenal",
-                            buttonText: { displayText: "Salam kenal 👋" },
-                            type: 1
-                        }],
-                        headerType: 4,
-                        mentions: [num, anu.author].filter(v => v)
+                        mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'remove') {
-                    let leaveMethod = 'keluar sendiri'
+                    let leaveMethod = 'keluar sendiri';
                     if (anu.author && anu.author !== num) {
-                        leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`
+                        leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`;
                     }
 
-                    let goodbyeMsg = `Goodbye @${num.split("@")[0]}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`
+                    let goodbyeMsg = `Sayonara @${num.split("@")[0]}! 👋\n${dataRealtime}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
                         footer: "Laurine Bot",
-                        buttons: [{
-                            buttonId: "sampai_jumpa",
-                            buttonText: { displayText: "Sampai jumpa 👋" },
-                            type: 1
-                        }],
-                        headerType: 4,
-                        mentions: [num, anu.author].filter(v => v)
+                        mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 }
             }
