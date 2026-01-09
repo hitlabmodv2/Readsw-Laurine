@@ -65,7 +65,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         // Log for debugging
         if (body.startsWith(prefix)) {
-            console.log(`[DEBUG] Command: ${body}, Sender: ${sender}, isPublic: ${isPublic}, isBot: ${isBot}`);
+            // Debug removed
         }
 
         if (!isPublic && !isBot) return;
@@ -114,6 +114,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     `▢ Pesan: ${m.body || m.mtype}\n` +
                     `▢ Pengirim: ${pushname}\n` +
                     `▢ JID: ${senderNumber}\n` +
+                    `▢ isPublic: ${isPublic}\n` +
+                    `▢ isBot: ${isBot}\n` +
                     `----------------------------------`
                 );
             }
