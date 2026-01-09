@@ -236,9 +236,46 @@ const clientstart = async() => {
         }
     });
 
-    client.public = JSON.parse(fs.readFileSync('./settings/wily.json')).public
+    client.ev.on('groups.update', async (update) => {
+        const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
+        if (!wily.notifgc) return
+        
+        for (const group of update) {
+            if (group.desc) {
+                try {
+                    const metadata = await client.groupMetadata(group.id)
+                    const now = require('moment-timezone')().tz('Asia/Jakarta').locale('id')
+                    
+                    // Di Baileys, author perubahan biasanya ada di update atau bisa ditarik dari metadata jika baru saja berubah
+                    // Namun untuk deteksi real-time yang akurat, kita gunakan author dari update jika tersedia
+                    const author = group.author || 'Seseorang';
+                    
+                    const descMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
+┃
+┃ 📝 *Info:* Deskripsi Grup Berubah
+┃ 👤 *Oleh:* @${author.split('@')[0]}
+┃ 📅 *Hari:* ${now.format('dddd')}
+┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *DESKRIPSI BARU* 』━━┄
+┃
+┃ ${group.desc}
+┃
+╰━━━━━━━━━━━━━━━━━━┄`;
+
+                    await client.sendMessage(group.id, {
+                        text: descMsg,
+                        mentions: [author]
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+        }
+    })
     
-    client.ev.on('connection.update', (update) => {
+    client.ev.on('group-participants.update', async (anu) => {
         const { connection, lastDisconnect } = update
         if (connection === 'close') {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
