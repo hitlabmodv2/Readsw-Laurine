@@ -382,13 +382,13 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'public') {
-                    if (wily.public) return reply(`maaf bot sudah dalam mode public`);
+                    if (wily.public) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} self\n\n*Penjelasan:* Bot sekarang dapat digunakan oleh semua orang di chat pribadi maupun di dalam grup. Pastikan bot tetap diawasi untuk menghindari penyalahgunaan.`);
                     wily.public = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = true;
                     reply(`Bot berhasil diubah ke *Public Mode* ✅\n\n*Penjelasan:* Bot sekarang dapat digunakan oleh semua orang di chat pribadi maupun di dalam grup. Pastikan bot tetap diawasi untuk menghindari penyalahgunaan.`);
                 } else if (action === 'self') {
-                    if (!wily.public) return reply(`maaf bot sudah dalam mode self`);
+                    if (!wily.public) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} public\n\n*Penjelasan:* Bot sekarang hanya merespon perintah dari Owner saja. Pengguna lain tidak akan mendapatkan respon saat bot berada di mode ini.`);
                     wily.public = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = false;
