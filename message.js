@@ -125,11 +125,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     `▢ ⌚ Waktu     : ${waktu} ${ucapanLog}\n` +
                     `▢ 🚀 Command   : ${command}\n` +
                     `▢ 📩 Pesan     : Ke Kirim\n` +
+                    `▢ 🔓 MODE      : ${isPublic ? 'Public' : 'Self'}\n` +
                     `▢ 👤 Pengirim  : ${pushname}\n` +
                     `▢ 🆔 JID       : ${senderNumber}\n` +
                     `▢ 👑 Owner     : ${isOwner ? 'Ya ✅' : 'Tidak ❌'}\n` +
                     `▢ 🤖 Bot       : ${isBot ? 'Ya ✅' : 'Tidak ❌'}\n` +
-                    `▢ 🔓 isPublic  : ${isPublic ? 'Ya ✅' : 'Tidak ❌'}\n` +
                     `----------------------------------`
                 );
             }
