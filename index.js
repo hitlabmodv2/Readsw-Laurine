@@ -394,6 +394,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
@@ -410,7 +411,7 @@ const clientstart = async() => {
                             type: 1
                         }],
                         headerType: 4,
-                        mentions: [num, anu.author]
+                        mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'demote') {
                     const dataRealtimeDemote = `╭━━━『 *DEMOTE DETECTOR* 』━━━┄
@@ -422,6 +423,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
@@ -438,7 +440,7 @@ const clientstart = async() => {
                             type: 1
                         }],
                         headerType: 4,
-                        mentions: [num, anu.author]
+                        mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 }
             }

@@ -317,6 +317,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃
 ┣━━『 *GROUP MENU* 』━━┄
 ┃ ▢ ${prefix}tagall
+┃ ▢ ${prefix}welcome on/off
+┃ ▢ ${prefix}goodbye on/off
 ┃
 ┣━━『 *TOOLS MENU* 』━━┄
 ┃ ▢ ${prefix}get
@@ -327,6 +329,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┣━━『 *UTILITIES* 』━━┄
 ┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
+┃ ▢ ${prefix}welcome
+┃ ▢ ${prefix}goodbye
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}notifgc
 ┃ ▢ ${prefix}typing
