@@ -107,7 +107,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
-            if (isCmd) {
+            if (isCmd && command) {
                 const now = moment().tz("Asia/Jakarta");
                 const hari = now.format("dddd");
                 const tanggal = now.format("DD MMM YYYY");
