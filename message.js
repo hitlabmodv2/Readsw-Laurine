@@ -127,8 +127,9 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     `▢ 📩 Pesan    : Ke Kirim\n` +
                     `▢ 👤 Pengirim : ${pushname}\n` +
                     `▢ 🆔 JID      : ${senderNumber}\n` +
-                    `▢ 🔓 isPublic : ${isPublic}\n` +
-                    `▢ 🤖 isBot    : ${isBot}\n` +
+                    `▢ 👑 Owner    : ${isOwner ? 'Ya ✅' : 'Tidak ❌'}\n` +
+                    `▢ 🤖 Bot      : ${isBot ? 'Ya ✅' : 'Tidak ❌'}\n` +
+                    `▢ 🔓 isPublic : ${isPublic ? 'Ya ✅' : 'Tidak ❌'}\n` +
                     `----------------------------------`
                 );
             }
