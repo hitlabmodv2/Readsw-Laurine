@@ -380,12 +380,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.public) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.public = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = true;
                     reply('Fitur Public Mode berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
+                } else if (action === 'off') {
+                    if (!wily.public) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
                     wily.public = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = false;
@@ -399,11 +402,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.terminal) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.terminal = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Terminal Mode berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
+                } else if (action === 'off') {
+                    if (!wily.terminal) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
                     wily.terminal = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Terminal Mode berhasil dimatikan ❌');
@@ -416,11 +422,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.reactionsw) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.reactionsw = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
+                } else if (action === 'off') {
+                    if (!wily.reactionsw) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
                     wily.reactionsw = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil dimatikan ❌');
@@ -546,11 +555,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.welcome) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.welcome = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Welcome berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
+                } else if (action === 'off') {
+                    if (!wily.welcome) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
                     wily.welcome = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Welcome berhasil dimatikan ❌');
@@ -563,11 +575,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.goodbye = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Goodbye berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
+                } else if (action === 'off') {
+                    if (!wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
                     wily.goodbye = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Goodbye berhasil dimatikan ❌');
