@@ -287,7 +287,7 @@ const clientstart = async() => {
                 else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
 
                 const dataRealtime = `
-${ucapan} 👋
+(${ucapan}) 👋
 
 ╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *User:* @${num.split('@')[0]}
@@ -314,6 +314,12 @@ ${ucapan} 👋
                         image: { url: ppuser },
                         caption: welcomeMsg,
                         footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "salam_kenal",
+                            buttonText: { displayText: "Salam kenal 👋" },
+                            type: 1
+                        }],
+                        headerType: 4,
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'remove') {
@@ -327,6 +333,12 @@ ${ucapan} 👋
                         image: { url: ppuser },
                         caption: goodbyeMsg,
                         footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "sampai_jumpa",
+                            buttonText: { displayText: "Sampai jumpa 👋" },
+                            type: 1
+                        }],
+                        headerType: 4,
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 }
