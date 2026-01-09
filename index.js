@@ -283,20 +283,33 @@ const clientstart = async() => {
                 const hour = now.hour();
                 let ucapan = 'Selamat Malam';
                 let emo = '🌙';
+                let wish = 'Have a nice dream! 💤';
                 if (hour >= 4 && hour < 10) {
                     ucapan = 'Selamat Pagi';
                     emo = '☀️';
+                    wish = 'Semangat mengawali hari! ☕';
                 } else if (hour >= 10 && hour < 15) {
                     ucapan = 'Selamat Siang';
                     emo = '🌤️';
+                    wish = 'Jangan lupa istirahat dan makan siang! 🍱';
                 } else if (hour >= 15 && hour < 18) {
                     ucapan = 'Selamat Sore';
                     emo = '🌇';
+                    wish = 'Selamat bersantai di sore hari! 🌅';
                 }
 
-                const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
+                if (anu.action === 'add') {
+                    const welcomeQuotes = [
+                        `Semoga harimu menyenangkan di sini! ✨`,
+                        `Jangan lupa baca deskripsi grup ya! 📖`,
+                        `Kenalan yuk biar makin akrab! 👋`,
+                        `Selamat bergabung di keluarga besar kami! 🫂`
+                    ];
+                    const randomQuote = welcomeQuotes[Math.floor(Math.random() * welcomeQuotes.length)];
+
+                    const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Hallo Selamat Datang :* @${num.split('@')[0]}
-┃ 👤 *Selamat :* ${ucapan} ${emo}
+┃ 👤 *Wishes :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
@@ -309,13 +322,12 @@ const clientstart = async() => {
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
-                if (anu.action === 'add') {
                     let joinMethod = 'via tautan undangan';
                     if (anu.author && anu.author !== num) {
                         joinMethod = `diundang oleh @${anu.author.split('@')[0]}`;
                     }
                     
-                    let welcomeMsg = `${dataRealtime}\n\nBergabung ${joinMethod}\nSemoga betah ya!`;
+                    let welcomeMsg = `${dataRealtime}\n\n${wish}\n${randomQuote}\n\nBergabung ${joinMethod}\nLaurine Bot`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
@@ -329,6 +341,14 @@ const clientstart = async() => {
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'remove') {
+                    const goodbyeQuotes = [
+                        `Terima kasih sudah pernah mampir! ✨`,
+                        `Sampai jumpa di lain kesempatan! 👋`,
+                        `Semoga sukses di luar sana! 🚀`,
+                        `Kenanganmu akan selalu ada! 🍃`
+                    ];
+                    const randomQuote = goodbyeQuotes[Math.floor(Math.random() * goodbyeQuotes.length)];
+
                     let leaveMethod = 'keluar sendiri';
                     if (anu.author && anu.author !== num) {
                         leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`;
@@ -336,7 +356,7 @@ const clientstart = async() => {
 
                     const dataRealtimeOut = `╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Hallo Selamat Tinggal :* @${num.split('@')[0]}
-┃ 👤 *Selamat :* ${ucapan} ${emo}
+┃ 👤 *Wishes :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
 ┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
@@ -349,7 +369,7 @@ const clientstart = async() => {
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
-                    let goodbyeMsg = `${dataRealtimeOut}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`;
+                    let goodbyeMsg = `${dataRealtimeOut}\n\n${wish}\n${randomQuote}\n\nUser ${leaveMethod}\nLaurine Bot`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
