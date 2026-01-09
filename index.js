@@ -290,17 +290,17 @@ const clientstart = async() => {
 (${ucapan}) 👋
 
 ╭━━━『 *NOTIFIKASI* 』━━━┄
-┃ 👤 *User:* @${num.split('@')[0]}
-┃ 📅 *Hari:* ${now.format('dddd')}
-┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
-┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
+┃ 👤 *Selamat datang :* @${num.split('@')[0]}
+┃ 📅 *Hari :* ${now.format('dddd')}
+┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
-┃ 🏫 *Grup:* ${metadata.subject}
-┃ 👑 *Owner:* @${groupOwner.split('@')[0]}
-┃ 👮 *Admin:* ${groupAdmins} Admin
-┃ 👥 *Member:* ${metadata.participants.length} Anggota
-┃ 🕒 *Dibuat:* ${groupCreation}
+┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
+┃ 👮 *Admin :* ${groupAdmins} Admin
+┃ 👥 *Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat:* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
                 if (anu.action === 'add') {
@@ -309,7 +309,7 @@ const clientstart = async() => {
                         joinMethod = `diundang oleh @${anu.author.split('@')[0]}`;
                     }
                     
-                    let welcomeMsg = `Welcome to *${metadata.subject}*! 🎊\n${dataRealtime}\n\nBergabung ${joinMethod}\nSemoga betah ya!`;
+                    let welcomeMsg = `${dataRealtime}\n\nBergabung ${joinMethod}\nSemoga betah ya!`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: welcomeMsg,
@@ -328,7 +328,24 @@ const clientstart = async() => {
                         leaveMethod = `di kick oleh @${anu.author.split('@')[0]}`;
                     }
 
-                    let goodbyeMsg = `Sayonara @${num.split("@")[0]}! 👋\n${dataRealtime}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`;
+                    const dataRealtimeOut = `
+(${ucapan}) 👋
+
+╭━━━『 *NOTIFIKASI* 』━━━┄
+┃ 👤 *Keluar :* @${num.split('@')[0]}
+┃ 📅 *Hari :* ${now.format('dddd')}
+┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *INFO GRUP* 』━━┄
+┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
+┃ 👮 *Admin :* ${groupAdmins} Admin
+┃ 👥 *Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat:* ${groupCreation}
+╰━━━━━━━━━━━━━━━━━━┄`;
+
+                    let goodbyeMsg = `${dataRealtimeOut}\n\nUser ${leaveMethod}\nSemoga harimu menyenangkan!`;
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
                         caption: goodbyeMsg,
