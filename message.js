@@ -328,6 +328,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
+┃ ▢ ${prefix}notifgc
 ┃ ▢ ${prefix}typing
 ┃ ▢ ${prefix}record
 ┃ ▢ ${prefix}addemoji
@@ -443,6 +444,26 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     wily.reactionsw = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "notifgc": {
+                if (!isOwner) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.notifgc) return reply(`Fitur Notif GC sudah aktif.`);
+                    wily.notifgc = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Notif GC berhasil diaktifkan ✅');
+                } else if (action === 'off') {
+                    if (!wily.notifgc) return reply(`Fitur Notif GC sudah mati.`);
+                    wily.notifgc = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Notif GC berhasil dimatikan ❌');
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }

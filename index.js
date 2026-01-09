@@ -384,6 +384,56 @@ const clientstart = async() => {
                         headerType: 4,
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
+                } else if (anu.action === 'promote') {
+                    const dataRealtimePromote = `╭━━━『 *PROMOTE DETECTOR* 』━━━┄
+┃ 👤 *User :* @${num.split('@')[0]}
+┃ 👮 *Status :* Diangkat Menjadi Admin ⬆️
+┃ 📅 *Hari :* ${now.format('dddd')}
+┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *INFO GRUP* 』━━┄
+┃ 🏫 *Grup :* ${metadata.subject}
+┃ 👤 *Oleh :* @${anu.author.split('@')[0]}
+╰━━━━━━━━━━━━━━━━━━┄`;
+                    
+                    await client.sendMessage(anu.id, {
+                        image: { url: ppuser },
+                        caption: dataRealtimePromote,
+                        footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "congrats",
+                            buttonText: { displayText: "Selamat! 🥳" },
+                            type: 1
+                        }],
+                        headerType: 4,
+                        mentions: [num, anu.author]
+                    })
+                } else if (anu.action === 'demote') {
+                    const dataRealtimeDemote = `╭━━━『 *DEMOTE DETECTOR* 』━━━┄
+┃ 👤 *User :* @${num.split('@')[0]}
+┃ 👮 *Status :* Diturunkan Menjadi Member ⬇️
+┃ 📅 *Hari :* ${now.format('dddd')}
+┃ 📆 *Tanggal :* ${now.format('DD MMMM YYYY')}
+┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
+┃
+┣━━『 *INFO GRUP* 』━━┄
+┃ 🏫 *Grup :* ${metadata.subject}
+┃ 👤 *Oleh :* @${anu.author.split('@')[0]}
+╰━━━━━━━━━━━━━━━━━━┄`;
+
+                    await client.sendMessage(anu.id, {
+                        image: { url: ppuser },
+                        caption: dataRealtimeDemote,
+                        footer: "Laurine Bot",
+                        buttons: [{
+                            buttonId: "patience",
+                            buttonText: { displayText: "Sabar ya.. 🫂" },
+                            type: 1
+                        }],
+                        headerType: 4,
+                        mentions: [num, anu.author]
+                    })
                 }
             }
         } catch (err) {
