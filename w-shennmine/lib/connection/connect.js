@@ -1,3 +1,13 @@
+/**
+ * BASE dari Bang kiuur sumber https://github.com/kiuur/laurine-wabot
+ * Recode & Fix oleh Bang Wily (6289688206739) sumber https://github.com/kominiyou
+ * 
+ * 📅 Last Update: Jumat, 09 Januari 2026
+ * ⚠️ Ingat: Script ini FREE ya, no enc 100%, NO JUAL! 
+ * 🛑 Ketahuan jual gue kagak bakal update lagi.
+ * 💡 Hargailah developer dan recoder yang sudah fix fitur ini.
+ */
+
 exports.konek = async ({ client, update, clientstart, DisconnectReason, Boom }) => {
     const { connection, lastDisconnect } = update;
     if (connection === 'close') {
