@@ -107,10 +107,10 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
 
         // Auto typing/record logic
-        if (wily.autotyping && !isBot) {
+        if (wily.autotyping && !m.key.fromMe) {
             await client.sendPresenceUpdate('composing', from);
         }
-        if (wily.autorecord && !isBot) {
+        if (wily.autorecord && !m.key.fromMe) {
             await client.sendPresenceUpdate('recording', from);
         }
         
