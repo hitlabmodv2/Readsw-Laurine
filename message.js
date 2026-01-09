@@ -272,7 +272,17 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const formattedTotalMem = formatSize(totalMem);
                 let timestamp = speed()
                 let latensi = speed() - timestamp
-                let menu = `╭━━━『 *LAURINE BOT* 』━━━┄
+
+                // Personalized Greeting
+                const time = moment.tz('Asia/Jakarta');
+                let ucapan = 'Selamat Malam';
+                const hour = time.hour();
+                if (hour >= 4 && hour < 10) ucapan = 'Selamat Pagi';
+                else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
+                else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
+
+                let menu = `Halo @${sender.split('@')[0]}, ${ucapan}! 👋\n\n`
+                menu += `╭━━━『 *LAURINE BOT* 』━━━┄
 ┃
 ┃ 🚀 *Speed:* ${latensi.toFixed(4)} s
 ┃ ⏳ *Runtime:* ${runtime(process.uptime())}
@@ -307,6 +317,9 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                             title: menu,
                             footer: config.settings.footer,
                             thumbnail: "./w-shennmine/lib/media/anime_girl.png",
+                            contextInfo: {
+                                mentionedJid: [sender]
+                            },
                             nativeFlowMessage: {
                                 buttons: [
                                     {
