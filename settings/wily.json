@@ -4,6 +4,6 @@
   "terminal": true,
   "welcome": true,
   "goodbye": true,
-  "autotyping": false,
+  "autotyping": true,
   "autorecord": false
 }
