@@ -108,7 +108,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd && command) {
-                const now = moment().tz("Asia/Jakarta");
+                const now = moment().tz("Asia/Jakarta").locale('id');
                 const hari = now.format("dddd");
                 const tanggal = now.format("DD MMM YYYY");
                 const waktu = now.format("HH:mm:ss");
@@ -245,7 +245,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 const uptime = os.uptime();
                 
                 // Real-time Date & Time (Asia/Jakarta)
-                const now = moment().tz("Asia/Jakarta");
+                const now = moment().tz("Asia/Jakarta").locale('id');
                 const hari = now.format("dddd");
                 const tanggal = now.format("DD MMMM YYYY");
                 const waktu = now.format("HH:mm:ss");
