@@ -6,5 +6,5 @@
   "goodbye": false,
   "autotyping": false,
   "autorecord": true,
-  "notifgc": true
+  "notifgc": false
 }
