@@ -96,39 +96,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
-        // Anti Status Mention Logic (Unlocked Version)
-        if (isGroup && wily.antitagsw) {
-            if (m.mtype === 'groupStatusMentionMessage') {
-                if (isAdmins || isOwner) {
-                    // Admins/Owners are free
-                } else {
-                    try {
-                        // Warning
-                        await client.sendMessage(from, {
-                            text: ````「 Tag Status Terdeteksi 」```\n\n@${sender.split('@')[0]} KAMU MENGTAG STATUSNYA\n> KAMU DI KICK😹`,
-                            contextInfo: { mentionedJid: [sender] }
-                        }, { quoted: m });
-
-                        // Delete & Kick
-                        if (isBotAdmins) {
-                            await client.sendMessage(from, {
-                                delete: {
-                                    remoteJid: from,
-                                    fromMe: false,
-                                    id: m.id,
-                                    participant: sender
-                                }
-                            });
-                            await client.groupParticipantsUpdate(from, [sender], 'remove');
-                        }
-                        return; // Stop processing
-                    } catch (e) {
-                        console.log(chalk.red('[AntiTagSW] Error:'), e);
-                    }
-                }
-            }
-        }
-        
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd || isBot) {
                 console.log(chalk.bgHex("#4a69bd").bold(`▢ New Message`));
@@ -317,7 +284,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}public
 ┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
-┃ ▢ ${prefix}antitagsw
 ┃ ▢ ${prefix}addemoji
 ┃ ▢ ${prefix}delemoji
 ┃ ▢ ${prefix}listemoji
@@ -425,20 +391,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "antitagsw": {
-                if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                if (text.toLowerCase() === 'on') {
-                    wily.antitagsw = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Anti Tag Status (SW) berhasil diaktifkan ✅');
-                } else if (text.toLowerCase() === 'off') {
-                    wily.antitagsw = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Anti Tag Status (SW) berhasil dimatikan ❌');
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
+                reply("Fitur ini telah dihapus.");
             }
             break;
             case "addemoji": {
