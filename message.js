@@ -107,10 +107,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
-            if (isCmd || isBot) {
-                console.log(chalk.bgHex("#4a69bd").bold(`▢ New Message`));
+            if (isCmd) {
+                console.log(chalk.bgHex("#4a69bd").bold(`▢ New Command`));
                 console.log(
                     `▢ Tanggal: ${new Date().toLocaleString()}\n` +
+                    `▢ Command: ${command}\n` +
                     `▢ Pesan: ${m.body || m.mtype}\n` +
                     `▢ Pengirim: ${pushname}\n` +
                     `▢ JID: ${senderNumber}\n` +
