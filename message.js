@@ -308,7 +308,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ 🚀 *Speed:* ${latensi.toFixed(4)} s
 ┃ ⏳ *Runtime:* ${runtime(process.uptime())}
 ┃ 📊 *RAM:* ${formattedUsedMem} / ${formattedTotalMem}
-┃
+┃`
+                if (isGroup) {
+                    menu += `\n┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}`
+                }
+                menu += `\n┃
 ┣━━『 *OWNER MENU* 』━━┄
 ┃ ▢ ${prefix}eval
 ┃ ▢ ${prefix}exec
@@ -329,8 +333,6 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┣━━『 *UTILITIES* 』━━┄
 ┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
-┃ ▢ ${prefix}welcome
-┃ ▢ ${prefix}goodbye
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}notifgc
 ┃ ▢ ${prefix}typing
@@ -769,6 +771,48 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 }, { quoted: fquoted.packSticker });
             }
             break
+            case 'welcome': {
+                if (!isBot) return reply(config.message.owner);
+                if (!m.isGroup) return reply(config.message.group);
+                if (!isAdmins && !isOwner) return reply(config.message.admin);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    if (wily.welcome) return reply("Fitur welcome sudah aktif sebelumnya.");
+                    wily.welcome = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply("Fitur welcome berhasil diaktifkan ✅");
+                } else if (text.toLowerCase() === 'off') {
+                    if (!wily.welcome) return reply("Fitur welcome sudah mati sebelumnya.");
+                    wily.welcome = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply("Fitur welcome berhasil dimatikan ❌");
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case 'goodbye': {
+                if (!isBot) return reply(config.message.owner);
+                if (!m.isGroup) return reply(config.message.group);
+                if (!isAdmins && !isOwner) return reply(config.message.admin);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (text.toLowerCase() === 'on') {
+                    if (wily.goodbye) return reply("Fitur goodbye sudah aktif sebelumnya.");
+                    wily.goodbye = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply("Fitur goodbye berhasil diaktifkan ✅");
+                } else if (text.toLowerCase() === 'off') {
+                    if (!wily.goodbye) return reply("Fitur goodbye sudah mati sebelumnya.");
+                    wily.goodbye = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply("Fitur goodbye berhasil dimatikan ❌");
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
             case "exec": {
                 if (!isBot) return reply(config.message.owner);
                 if (!budy.startsWith(".exec")) return;
