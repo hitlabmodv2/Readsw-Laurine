@@ -309,7 +309,7 @@ const clientstart = async() => {
 
                     let joinLabel = 'Bergabung via tautan undangan';
                     if (anu.author && anu.author !== num) {
-                        joinLabel = `Halo @${num.split('@')[0]}, User baru saja ditambahkan oleh admin @${anu.author.split('@')[0]}!`;
+                        joinLabel = `👤 Ditambahkan oleh admin : @${anu.author.split('@')[0]} 👋`;
                     }
 
                     const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
@@ -357,9 +357,9 @@ const clientstart = async() => {
                     ];
                     const randomQuote = goodbyeQuotes[Math.floor(Math.random() * goodbyeQuotes.length)];
 
-                    let leaveLabel = 'User keluar sendiri';
+                    let leaveLabel = 'User keluar sendiri 👋';
                     if (anu.author && anu.author !== num) {
-                        leaveLabel = `Yah @${num.split('@')[0]}, User baru saja di kick oleh admin @${anu.author.split('@')[0]}!`;
+                        leaveLabel = `👤 Dikick oleh admin : @${anu.author.split('@')[0]} 🚫`;
                     }
 
                     const dataRealtimeOut = `╭━━━『 *NOTIFIKASI* 』━━━┄
