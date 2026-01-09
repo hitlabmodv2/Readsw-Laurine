@@ -317,7 +317,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ ▢ ${prefix}mesinfo
 ┃
 ┣━━『 *UTILITIES* 』━━┄
-┃ ▢ ${prefix}public
+┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
 ┃ ▢ ${prefix}reactionsw
 ┃ ▢ ${prefix}addemoji
@@ -376,25 +376,25 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 reply(`Pesan yang di-reply memiliki:\n- Tipe pesan: *${type}*\n- ID pesan: *${id}*`);
             }
             break;
-            case "public": {
+            case "mode": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                if (!text) return reply(`Gunakan: ${prefix + command} public/self`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
-                if (action === 'on') {
-                    if (wily.public) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
+                if (action === 'public') {
+                    if (wily.public) return reply(`maaf bot sudah dalam mode public`);
                     wily.public = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = true;
-                    reply('Fitur Public Mode berhasil diaktifkan ✅');
-                } else if (action === 'off') {
-                    if (!wily.public) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
+                    reply('Bot berhasil diubah ke Public Mode ✅');
+                } else if (action === 'self') {
+                    if (!wily.public) return reply(`maaf bot sudah dalam mode self`);
                     wily.public = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     client.public = false;
-                    reply('Fitur Self Mode berhasil diaktifkan ❌');
+                    reply('Bot berhasil diubah ke Self Mode ❌');
                 } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
+                    reply(`Gunakan: ${prefix + command} public/self`);
                 }
             }
             break;
