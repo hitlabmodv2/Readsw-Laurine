@@ -393,8 +393,11 @@ const clientstart = async() => {
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
-┃ 🏫 *Grup :* ${metadata.subject}
-┃ 👤 *Oleh :* @${anu.author.split('@')[0]}
+┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
+┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
                     
                     await client.sendMessage(anu.id, {
@@ -418,8 +421,11 @@ const clientstart = async() => {
 ┃ ⌚ *Waktu :* ${now.format('HH:mm:ss')} WIB
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
-┃ 🏫 *Grup :* ${metadata.subject}
-┃ 👤 *Oleh :* @${anu.author.split('@')[0]}
+┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
+┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
+┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
                     await client.sendMessage(anu.id, {
