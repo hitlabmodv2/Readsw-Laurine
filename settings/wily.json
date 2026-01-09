@@ -3,5 +3,7 @@
   "public": true,
   "terminal": true,
   "welcome": true,
-  "goodbye": true
+  "goodbye": true,
+  "autotyping": false,
+  "autorecord": false
 }

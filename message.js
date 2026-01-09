@@ -105,6 +105,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isAdmins = m?.isGroup ? groupAdmins.includes(m.sender) : false;
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
         const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
+
+        // Auto typing/record logic
+        if (wily.autotyping && !isCmd && !isBot) {
+            await client.sendPresenceUpdate('composing', from);
+        }
+        if (wily.autorecord && !isCmd && !isBot) {
+            await client.sendPresenceUpdate('recording', from);
+        }
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd && command) {
@@ -493,6 +501,57 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             case "delemoji": {
                 if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
+                let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
+                const index = emojis.indexOf(text);
+                if (index > -1) {
+                    emojis.splice(index, 1);
+                    fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
+                    reply(`Emoji ${text} berhasil dihapus.`);
+                } else {
+                    reply(`Emoji ${text} tidak ditemukan.`);
+                }
+            }
+            break;
+            case "typing": {
+                if (!isOwner) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.autotyping) return reply(`Fitur Auto Typing sudah aktif.`);
+                    wily.autotyping = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Auto Typing berhasil diaktifkan ✅');
+                } else if (action === 'off') {
+                    if (!wily.autotyping) return reply(`Fitur Auto Typing sudah mati.`);
+                    wily.autotyping = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Auto Typing berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
+            case "record": {
+                if (!isOwner) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.autorecord) return reply(`Fitur Auto Record sudah aktif.`);
+                    wily.autorecord = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Auto Record berhasil diaktifkan ✅');
+                } else if (action === 'off') {
+                    if (!wily.autorecord) return reply(`Fitur Auto Record sudah mati.`);
+                    wily.autorecord = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Auto Record berhasil dimatikan ❌');
+                } else {
+                    reply(`Gunakan: ${prefix + command} on/off`);
+                }
+            }
+            break;
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                 const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
                 let toDelete = text.match(emojiRegex);
