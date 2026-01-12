@@ -461,15 +461,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'on') {
-                    if (wily.notifgc) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot sekarang akan mengirimkan notifikasi setiap ada perubahan di grup.`);
+                    if (wily.notifgc) return reply(`╭━━━『 *NOTIFIKASI* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Aktif\n┃ 📝 *Info:* Fitur Notif GC sudah dalam keadaan ON\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Matikan:* Ketik ${prefix + command} off\n┃ 📖 *Penjelasan:* Bot akan mengirimkan notifikasi setiap ada perubahan di grup.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.notifgc = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Notif GC berhasil diaktifkan ✅\n\n*Penjelasan:* Bot sekarang akan mengirimkan notifikasi setiap ada perubahan di grup.');
+                    reply(`╭━━━『 *NOTIFIKASI* 』━━━┄\n┃\n┃ ✅ *Status:* Berhasil Diaktifkan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot sekarang akan mengirimkan notifikasi setiap ada perubahan di grup.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else if (action === 'off') {
-                    if (!wily.notifgc) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.`);
+                    if (!wily.notifgc) return reply(`╭━━━『 *NOTIFIKASI* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Mati\n┃ 📝 *Info:* Fitur Notif GC sudah dalam keadaan OFF\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Aktifkan:* Ketik ${prefix + command} on\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.notifgc = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Notif GC berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.');
+                    reply(`╭━━━『 *NOTIFIKASI* 』━━━┄\n┃\n┃ ❌ *Status:* Berhasil Dimatikan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan notifikasi perubahan grup.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
@@ -779,15 +779,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'on') {
-                    if (wily.welcome) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru yang bergabung.`);
+                    if (wily.welcome) return reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Aktif\n┃ 📝 *Info:* Fitur Welcome sudah dalam keadaan ON\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Matikan:* Ketik ${prefix + command} off\n┃ 📖 *Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.welcome = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur welcome berhasil diaktifkan ✅\n\n*Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru yang bergabung.");
+                    reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ✅ *Status:* Berhasil Diaktifkan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot sekarang akan menyambut anggota baru yang bergabung.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else if (action === 'off') {
-                    if (!wily.welcome) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.`);
+                    if (!wily.welcome) return reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Mati\n┃ 📝 *Info:* Fitur Welcome sudah dalam keadaan OFF\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Aktifkan:* Ketik ${prefix + command} on\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.welcome = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur welcome berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.");
+                    reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ❌ *Status:* Berhasil Dimatikan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot tidak akan lagi menyambut anggota baru.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
@@ -801,15 +801,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'on') {
-                    if (wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off\n\n*Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.`);
+                    if (wily.goodbye) return reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Aktif\n┃ 📝 *Info:* Fitur Goodbye sudah dalam keadaan ON\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Matikan:* Ketik ${prefix + command} off\n┃ 📖 *Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.goodbye = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur goodbye berhasil diaktifkan ✅\n\n*Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.");
+                    reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ✅ *Status:* Berhasil Diaktifkan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot sekarang akan mengirimkan pesan saat ada yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else if (action === 'off') {
-                    if (!wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.`);
+                    if (!wily.goodbye) return reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Mati\n┃ 📝 *Info:* Fitur Goodbye sudah dalam keadaan OFF\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Aktifkan:* Ketik ${prefix + command} on\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                     wily.goodbye = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply("Fitur goodbye berhasil dimatikan ❌\n\n*Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.");
+                    reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ❌ *Status:* Berhasil Dimatikan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan saat ada yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }

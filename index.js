@@ -135,42 +135,6 @@ const clientstart = async() => {
                 Object.keys(mek.message)[0] === 'ephemeralMessage' ?
                 mek.message.ephemeralMessage.message : mek.message
             
-            // Auto detect group description change from system messages
-            const mtype = Object.keys(mek.message)[0];
-            if (mtype === 'protocolMessage' && mek.message.protocolMessage.type === 14) {
-                 // Logic for catching desc change
-            }
-            
-            // Detection via group description system message
-            if (mtype === 'groupNotificationMessage' || mek.message?.stubType === 24) {
-                const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
-                if (wily.notifgc) {
-                    const from = mek.key.remoteJid
-                    const author = mek.key.participant || mek.participant || 'Seseorang'
-                    const now = require('moment-timezone')().tz('Asia/Jakarta').locale('id')
-                    const groupMetadata = await client.groupMetadata(from)
-                    
-                    const descMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
-┃
-┃ 📝 *Info:* Deskripsi Grup Berubah
-┃ 👤 *Oleh:* @${author.split('@')[0]}
-┃ 📅 *Hari:* ${now.format('dddd')}
-┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
-┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
-┃
-┣━━『 *DESKRIPSI BARU* 』━━┄
-┃
-┃ ${groupMetadata.desc || 'Deskripsi dihapus'}
-┃
-╰━━━━━━━━━━━━━━━━━━┄`;
-
-                    await client.sendMessage(from, {
-                        text: descMsg,
-                        mentions: [author]
-                    })
-                }
-            }
-
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
                 const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (wily.reactionsw) {
@@ -272,41 +236,28 @@ const clientstart = async() => {
         }
     });
 
-    client.ev.on('groups.update', async (update) => {
-        const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
-        if (!wily.notifgc) return
-        
-        for (const group of update) {
-            if (group.desc !== undefined) {
-                try {
-                    const now = require('moment-timezone')().tz('Asia/Jakarta').locale('id')
-                    const author = group.author || 'Seseorang';
-                    
-                    const descMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
-┃
-┃ 📝 *Info:* Deskripsi Grup Berubah
-┃ 👤 *Oleh:* @${author.split('@')[0]}
-┃ 📅 *Hari:* ${now.format('dddd')}
-┃ 📆 *Tanggal:* ${now.format('DD MMMM YYYY')}
-┃ ⌚ *Waktu:* ${now.format('HH:mm:ss')} WIB
-┃
-┣━━『 *DESKRIPSI BARU* 』━━┄
-┃
-┃ ${group.desc || 'Deskripsi dihapus'}
-┃
-╰━━━━━━━━━━━━━━━━━━┄`;
-
-                    await client.sendMessage(group.id, {
-                        text: descMsg,
-                        mentions: [author]
-                    })
-                } catch (err) {
-                    console.log('Error in groups.update:', err)
-                }
+    client.public = JSON.parse(fs.readFileSync('./settings/wily.json')).public
+    
+    client.ev.on('connection.update', (update) => {
+        const { connection, lastDisconnect } = update
+        if (connection === 'close') {
+            const statusCode = (lastDisconnect?.error)?.output?.statusCode
+            if (statusCode === 429) {
+                console.log(chalk.red('⚠️ Rate limited! Menunggu 60 detik sebelum menyambung kembali...'))
+                setTimeout(() => clientstart(), 60000)
+                return
+            }
+            // Add automatic reconnection for common errors
+            if (statusCode !== DisconnectReason.loggedOut) {
+                console.log(chalk.yellow(`🔄 Koneksi terputus (Status: ${statusCode}). Mencoba menyambung kembali...`))
+                setTimeout(() => clientstart(), 3000)
+                return
             }
         }
+        const { konek } = require('./w-shennmine/lib/connection/connect')
+        konek({ client, update, clientstart, DisconnectReason, Boom })
     })
-    
+
     client.ev.on('group-participants.update', async (anu) => {
         const wily = JSON.parse(fs.readFileSync('./settings/wily.json'))
         if (!wily.welcome && anu.action === 'add') return
@@ -317,7 +268,7 @@ const clientstart = async() => {
             let metadata = await client.groupMetadata(anu.id)
             let participants = anu.participants
             const groupOwner = metadata.owner || metadata.participants.find(p => p.admin === 'superadmin')?.id || '';
-            const groupAdminsCount = metadata.participants.filter(p => p.admin === 'admin' || p.admin === 'superadmin').length;
+            const groupAdmins = metadata.participants.filter(p => p.admin === 'admin' || p.admin === 'superadmin').length;
             const groupCreation = moment(metadata.creation * 1000).tz('Asia/Jakarta').locale('id').format('DD MMMM YYYY, HH:mm:ss');
             
             for (let num of participants) {
@@ -332,24 +283,36 @@ const clientstart = async() => {
                 const hour = now.hour();
                 let ucapan = 'Selamat Malam';
                 let emo = '🌙';
+                let wish = 'Have a nice dream! 💤';
                 if (hour >= 4 && hour < 10) {
                     ucapan = 'Selamat Pagi';
                     emo = '☀️';
+                    wish = 'Semangat mengawali hari! ☕';
                 } else if (hour >= 10 && hour < 15) {
                     ucapan = 'Selamat Siang';
                     emo = '🌤️';
+                    wish = 'Jangan lupa istirahat dan makan siang! 🍱';
                 } else if (hour >= 15 && hour < 18) {
                     ucapan = 'Selamat Sore';
                     emo = '🌇';
+                    wish = 'Selamat bersantai di sore hari! 🌅';
                 }
 
                 if (anu.action === 'add') {
+                    const welcomeQuotes = [
+                        `Semoga harimu menyenangkan di sini! ✨`,
+                        `Jangan lupa baca deskripsi grup ya! 📖`,
+                        `Kenalan yuk biar makin akrab! 👋`,
+                        `Selamat bergabung di keluarga besar kami! 🫂`
+                    ];
+                    const randomQuote = welcomeQuotes[Math.floor(Math.random() * welcomeQuotes.length)];
+
                     let joinLabel = 'Bergabung via tautan undangan';
                     if (anu.author && anu.author !== num) {
                         joinLabel = `👤 Ditambahkan oleh admin : @${anu.author.split('@')[0]} 👋`;
                     }
 
-                    const welcomeMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
+                    const dataRealtime = `╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Hallo Selamat Datang :* @${num.split('@')[0]}
 ┃ 👤 *Wishes :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
@@ -359,10 +322,12 @@ const clientstart = async() => {
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
-┃ 👮 *Total Admin :* ${groupAdminsCount} Admin
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
-╰━━━━━━━━━━━━━━━━━━┄
+╰━━━━━━━━━━━━━━━━━━┄`;
+                    
+                    let welcomeMsg = `${dataRealtime}
 
 ╭━━━━━━━━━━━━━━━━━━┄
 ┃ ${joinLabel}
@@ -386,7 +351,7 @@ const clientstart = async() => {
                         leaveLabel = `👤 Dikick oleh admin : @${anu.author.split('@')[0]} 🚫`;
                     }
 
-                    const goodbyeMsg = `╭━━━『 *NOTIFIKASI* 』━━━┄
+                    const dataRealtimeOut = `╭━━━『 *NOTIFIKASI* 』━━━┄
 ┃ 👤 *Hallo Selamat Tinggal :* @${num.split('@')[0]}
 ┃ 👤 *Wishes :* ${ucapan} ${emo}
 ┃ 📅 *Hari :* ${now.format('dddd')}
@@ -396,10 +361,12 @@ const clientstart = async() => {
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
-┃ 👮 *Total Admin :* ${groupAdminsCount} Admin
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
-╰━━━━━━━━━━━━━━━━━━┄
+╰━━━━━━━━━━━━━━━━━━┄`;
+
+                    let goodbyeMsg = `${dataRealtimeOut}
 
 ╭━━━━━━━━━━━━━━━━━━┄
 ┃ ${leaveLabel}
@@ -418,7 +385,7 @@ const clientstart = async() => {
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'promote') {
-                    const promoteMsg = `╭━━━『 *PROMOTE DETECTOR* 』━━━┄
+                    const dataRealtimePromote = `╭━━━『 *PROMOTE DETECTOR* 』━━━┄
 ┃ 👤 *User :* @${num.split('@')[0]}
 ┃ 👮 *Status :* Diangkat Menjadi Admin ⬆️
 ┃ 📅 *Hari :* ${now.format('dddd')}
@@ -429,14 +396,14 @@ const clientstart = async() => {
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
-┃ 👮 *Total Admin :* ${groupAdminsCount} Admin
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
                     
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
-                        caption: promoteMsg,
+                        caption: dataRealtimePromote,
                         footer: "Laurine Bot",
                         buttons: [{
                             buttonId: "congrats",
@@ -447,7 +414,7 @@ const clientstart = async() => {
                         mentions: [num, anu.author, groupOwner].filter(v => v)
                     })
                 } else if (anu.action === 'demote') {
-                    const demoteMsg = `╭━━━『 *DEMOTE DETECTOR* 』━━━┄
+                    const dataRealtimeDemote = `╭━━━『 *DEMOTE DETECTOR* 』━━━┄
 ┃ 👤 *User :* @${num.split('@')[0]}
 ┃ 👮 *Status :* Diturunkan Menjadi Member ⬇️
 ┃ 📅 *Hari :* ${now.format('dddd')}
@@ -458,14 +425,14 @@ const clientstart = async() => {
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
 ┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
-┃ 👮 *Total Admin :* ${groupAdminsCount} Admin
+┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
 ╰━━━━━━━━━━━━━━━━━━┄`;
 
                     await client.sendMessage(anu.id, {
                         image: { url: ppuser },
-                        caption: demoteMsg,
+                        caption: dataRealtimeDemote,
                         footer: "Laurine Bot",
                         buttons: [{
                             buttonId: "patience",
@@ -481,7 +448,6 @@ const clientstart = async() => {
             console.log(err)
         }
     })
-
     
     client.deleteMessage = async (chatId, key) => {
         try {
