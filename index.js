@@ -139,14 +139,36 @@ const clientstart = async() => {
     client.prepareWAMessageMedia = prepareWAMessageMedia;
     
     if (method === '1' && !state.creds.registered && phoneNumber) {
+        console.clear();
+        console.log(chalk.cyan.bold('╭──────────────────────────────────────╮'));
+        console.log(chalk.cyan.bold('│       SISTEM CLEANER SESSION         │'));
+        console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
+        console.log(chalk.cyan.bold('│  Session Invalid/Logout Terdeteksi   │'));
+        console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
+        console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
+
         console.log(`/> Requested pairing code for number: ${phoneNumber}`);
         // Add a small delay to ensure socket is ready
         await new Promise(resolve => setTimeout(resolve, 5000));
         try {
             const code = await client.requestPairingCode(phoneNumber, config().setPair);
-            console.log(`\n----------------------------`);
-            console.log(`YOUR PAIRING CODE: ${code}`);
-            console.log(`----------------------------\n`);
+            console.clear();
+            console.log(chalk.cyan.bold('╭──────────────────────────────────────╮'));
+            console.log(chalk.cyan.bold('│       SISTEM CLEANER SESSION         │'));
+            console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
+            console.log(chalk.cyan.bold('│  Session Invalid/Logout Terdeteksi   │'));
+            console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
+            console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
+
+            console.log(chalk.yellow.bold('╭━━━〔 TUTORIAL PAIRING CODE 〕━━━┈'));
+            console.log(chalk.yellow('┃ 1. Buka Notifikasi di HP Anda'));
+            console.log(chalk.yellow('┃ 2. Klik "Apakah itu Anda yang menautkan?"'));
+            console.log(chalk.yellow('┃ 3. Klik "Konfirmasi"'));
+            console.log(chalk.yellow('┃ 4. Masukkan kode di bawah ini:'));
+            console.log(chalk.yellow.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
+
+            console.log(chalk.black.bgGreen.bold(`  ${code}  `));
+            console.log(`\n${chalk.green('Silakan masukkan kode di atas ke HP Anda.')}`);
         } catch (err) {
             console.error('Error requesting pairing code:', err);
         }
