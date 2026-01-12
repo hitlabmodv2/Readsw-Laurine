@@ -92,11 +92,35 @@ const clientstart = async() => {
         console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
         console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
         
+        console.log(chalk.yellow.bold('╭━━━〔 TUTORIAL LOGIN 〕━━━┈'));
+        console.log(chalk.yellow('┃ 1. Pairing Code : Login tanpa scan QR'));
+        console.log(chalk.yellow('┃    - Masukkan nomor WA (62xxx)'));
+        console.log(chalk.yellow('┃    - Masukkan kode di Notifikasi WA'));
+        console.log(chalk.yellow('┃ 2. QR Code : Login dengan scan QR'));
+        console.log(chalk.yellow('┃    - Scan kode yang muncul di layar'));
+        console.log(chalk.yellow.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
+
         method = await question(color('Pilih metode login:\n1. Pairing Code\n2. QR Code\nPilihan (1/2): ', 'cyan'));
         console.clear();
+        
         if (method === '1') {
-            phoneNumber = await question(color('Silakan masukkan nomor WhatsApp Anda, diawali dengan 62:\nNomor: ', 'cyan'));
+            console.log(chalk.green.bold('╭━━━〔 TUTORIAL PAIRING 〕━━━┈'));
+            console.log(chalk.green('┃ 1. Buka WhatsApp di HP Anda'));
+            console.log(chalk.green('┃ 2. Klik Perangkat Tertaut'));
+            console.log(chalk.green('┃ 3. Klik Tautkan Perangkat'));
+            console.log(chalk.green('┃ 4. Klik "Tautkan dengan nomor telepon"'));
+            console.log(chalk.green.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
+            
+            phoneNumber = await question(color('Silakan masukkan nomor WhatsApp Anda (Contoh: 628xxx):\nNomor: ', 'cyan'));
             console.clear();
+        } else if (method === '2') {
+            console.log(chalk.green.bold('╭━━━〔 TUTORIAL QR CODE 〕━━━┈'));
+            console.log(chalk.green('┃ 1. Buka WhatsApp di HP Anda'));
+            console.log(chalk.green('┃ 2. Klik Perangkat Tertaut'));
+            console.log(chalk.green('┃ 3. Klik Tautkan Perangkat'));
+            console.log(chalk.green('┃ 4. Scan QR Code yang akan muncul'));
+            console.log(chalk.green.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
+            console.log(chalk.yellow('Sedang menyiapkan QR Code... Tunggu sebentar.\n'));
         }
     }
 
