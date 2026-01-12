@@ -1,6 +1,6 @@
 {
   "reactionsw": true,
-  "public": true,
+  "public": false,
   "terminal": true,
   "welcome": true,
   "goodbye": true,
