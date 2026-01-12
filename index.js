@@ -380,6 +380,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
@@ -418,6 +419,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
 ┃ 🕒 *Grup Dibuat :* ${groupCreation}
@@ -451,6 +453,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
@@ -479,6 +482,7 @@ const clientstart = async() => {
 ┃
 ┣━━『 *INFO GRUP* 』━━┄
 ┃ 🏫 *Nama Grup :* ${metadata.subject}
+┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}
 ┃ 👤 *Oleh Admin :* @${anu.author.split('@')[0]}
 ┃ 👮 *Total Admin :* ${groupAdmins} Admin
 ┃ 👥 *Total Member :* ${metadata.participants.length} Anggota
