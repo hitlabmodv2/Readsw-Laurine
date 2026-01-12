@@ -91,25 +91,19 @@ const clientstart = async() => {
         console.log(chalk.cyan.bold('│  Session Invalid/Logout Terdeteksi   │'));
         console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
         console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
-        
-        console.log(chalk.yellow.bold('╭━━━〔 TUTORIAL LOGIN 〕━━━┈'));
-        console.log(chalk.yellow('┃ 1. Pairing Code : Login tanpa scan QR'));
-        console.log(chalk.yellow('┃    - Masukkan nomor WA (62xxx)'));
-        console.log(chalk.yellow('┃    - Masukkan kode di Notifikasi WA'));
-        console.log(chalk.yellow('┃ 2. QR Code : Login dengan scan QR'));
-        console.log(chalk.yellow('┃    - Scan kode yang muncul di layar'));
-        console.log(chalk.yellow.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
 
         method = await question(color('Pilih metode login:\n1. Pairing Code\n2. QR Code\nPilihan (1/2): ', 'cyan'));
         console.clear();
         
         if (method === '1') {
-            console.log(chalk.green.bold('╭━━━〔 TUTORIAL PAIRING 〕━━━┈'));
+            console.log(chalk.green.bold('╭━━━〔 TUTORIAL PAIRING CODE 〕━━━┈'));
             console.log(chalk.green('┃ 1. Buka WhatsApp di HP Anda'));
             console.log(chalk.green('┃ 2. Klik Perangkat Tertaut'));
             console.log(chalk.green('┃ 3. Klik Tautkan Perangkat'));
-            console.log(chalk.green('┃ 4. Klik "Tautkan dengan nomor telepon"'));
-            console.log(chalk.green.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
+            console.log(chalk.green('┃ 4. Klik "Tautkan dengan nomor telepon saja"'));
+            console.log(chalk.green('┃ 5. Masukkan nomor HP di bawah ini'));
+            console.log(chalk.green('┃ 6. Masukkan kode pairing yang muncul ke HP'));
+            console.log(chalk.green.bold('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┈\n'));
             
             phoneNumber = await question(color('Silakan masukkan nomor WhatsApp Anda (Contoh: 628xxx):\nNomor: ', 'cyan'));
             console.clear();
