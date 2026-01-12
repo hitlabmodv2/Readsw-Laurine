@@ -92,9 +92,9 @@ const clientstart = async() => {
         console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
         console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
         
-        method = await question(color('/> Pilih metode login:\n1. Pairing Code\n2. QR Code\n> Pilihan (1/2): ', 'cyan'));
+        method = await question(color('Pilih metode login:\n1. Pairing Code\n2. QR Code\nPilihan (1/2): ', 'cyan'));
         if (method === '1') {
-            phoneNumber = await question(color('/> Silakan masukkan nomor WhatsApp Anda, diawali dengan 62:\n> Nomor: ', 'cyan'));
+            phoneNumber = await question(color('Silakan masukkan nomor WhatsApp Anda, diawali dengan 62:\nNomor: ', 'cyan'));
         }
     }
 
