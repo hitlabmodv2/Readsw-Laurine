@@ -13,7 +13,7 @@ const fs = require('fs')
 const config = {
     owner: ["6289688206739", "6289667923162"],
     botNumber: "6289667923162",
-    setPair: "K1UU1212",
+    setPair: "WILYCODE",
     thumbUrl: "https://github.com/kiuur.png",
     session: "sessions",
     message: {
