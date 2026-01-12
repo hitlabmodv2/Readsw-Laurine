@@ -46,6 +46,7 @@ const readline = require("readline");
 const fs = require('fs');
 const crypto = require("crypto")
 const path = require("path")
+const chalk = require('chalk');
 
 const { spawn, exec, execSync } = require('child_process');
 const { Boom } = require('@hapi/boom');
@@ -83,9 +84,17 @@ const clientstart = async() => {
     
     // Auto-detect if credentials are valid
     if (!state.creds || !state.creds.me) {
-        method = await question('/> Pilih metode login:\n1. Pairing Code\n2. QR Code\n> Pilihan (1/2): ');
+        console.clear();
+        console.log(chalk.cyan.bold('╭──────────────────────────────────────╮'));
+        console.log(chalk.cyan.bold('│       SISTEM CLEANER SESSION         │'));
+        console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
+        console.log(chalk.cyan.bold('│  Session Invalid/Logout Terdeteksi   │'));
+        console.log(chalk.cyan.bold('│  Folder session telah dibersihkan!   │'));
+        console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
+        
+        method = await question(color('/> Pilih metode login:\n1. Pairing Code\n2. QR Code\n> Pilihan (1/2): ', 'cyan'));
         if (method === '1') {
-            phoneNumber = await question('/> Silakan masukkan nomor WhatsApp Anda, diawali dengan 62:\n> Nomor: ');
+            phoneNumber = await question(color('/> Silakan masukkan nomor WhatsApp Anda, diawali dengan 62:\n> Nomor: ', 'cyan'));
         }
     }
 
@@ -126,7 +135,6 @@ const clientstart = async() => {
     store.bind(client.ev);
     
     client.ev.on('creds.update', saveCreds);
-    const chalk = require('chalk');
     client.ev.on('messages.upsert', async chatUpdate => {
         try {
             const mek = chatUpdate.messages[0]
