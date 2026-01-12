@@ -12,29 +12,34 @@ const config = require('../settings/config');
 const { readdirSync, existsSync } = require('fs');
 
 let handler = async (m, { reply }) => {
-  const sessionDir = config.session;
+  const sessionDir = './sessions'; // Hardcoded or from config
   if (!existsSync(sessionDir)) return reply("Folder session tidak ditemukan.");
 
   const files = readdirSync(sessionDir);
-  const counts = {};
+  const counts = {
+    'pre-key': 0,
+    'sender-key': 0,
+    'app-state': 0,
+    'creds': 0,
+    'session': 0
+  };
 
   files.forEach(file => {
-    // Grouping by name (e.g. pre-key, session, app-state)
-    const prefix = file.includes('-') ? file.split('-').slice(0, 2).join('-').replace(/\.json$/, '') : file.split('.')[0];
-    counts[prefix] = (counts[prefix] || 0) + 1;
+    if (file.startsWith('pre-key')) counts['pre-key']++;
+    else if (file.startsWith('sender-key')) counts['sender-key']++;
+    else if (file.startsWith('app-state')) counts['app-state']++;
+    else if (file.startsWith('creds')) counts['creds']++;
+    else if (file.startsWith('session')) counts['session']++;
   });
 
   let message = `*Real-time Session Checker*\n\n`;
   message += `📊 *Daftar File di Folder Session:*\n`;
   
-  const sortedEntries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  if (sortedEntries.length > 0) {
-    sortedEntries.forEach(([prefix, count]) => {
-      message += ` ▢ ${prefix} - ${count} file\n`;
-    });
-  } else {
-    message += ` ▢ Folder kosong.\n`;
-  }
+  message += ` ▢ pre-key - ${counts['pre-key']} file\n`;
+  message += ` ▢ sender-key - ${counts['sender-key']} file\n`;
+  message += ` ▢ app-state - ${counts['app-state']} file\n`;
+  message += ` ▢ creds - ${counts['creds']} file\n`;
+  message += ` ▢ session - ${counts['session']} file\n`;
 
   const totalFiles = files.length;
   message += `\n*Total:* ${totalFiles} file ditemukan.`;
