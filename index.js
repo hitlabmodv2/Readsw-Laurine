@@ -292,6 +292,13 @@ const clientstart = async() => {
         const { connection, lastDisconnect } = update
         if (connection === 'close') {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
+            
+            if (statusCode === DisconnectReason.connectionReplaced) {
+                console.log(chalk.red('⚠️ Koneksi digantikan oleh sesi lain (Status: 440). Menunggu 10 detik sebelum mencoba lagi...'))
+                setTimeout(() => clientstart(), 10000)
+                return
+            }
+            
             if (statusCode === 429) {
                 console.log(chalk.red('⚠️ Rate limited! Menunggu 60 detik sebelum menyambung kembali...'))
                 setTimeout(() => clientstart(), 60000)
@@ -299,8 +306,8 @@ const clientstart = async() => {
             }
             // Add automatic reconnection for common errors
             if (statusCode !== DisconnectReason.loggedOut) {
-                console.log(chalk.yellow(`🔄 Koneksi terputus (Status: ${statusCode}). Mencoba menyambung kembali...`))
-                setTimeout(() => clientstart(), 3000)
+                console.log(chalk.yellow(`🔄 Koneksi terputus (Status: ${statusCode}). Mencoba menyambung kembali dalam 5 detik...`))
+                setTimeout(() => clientstart(), 5000)
                 return
             } else {
                 console.log(chalk.red('⚠️ Session invalid/logged out. Menghapus folder session...'))
