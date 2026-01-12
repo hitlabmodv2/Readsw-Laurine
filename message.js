@@ -308,11 +308,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┃ 🚀 *Speed:* ${latensi.toFixed(4)} s
 ┃ ⏳ *Runtime:* ${runtime(process.uptime())}
 ┃ 📊 *RAM:* ${formattedUsedMem} / ${formattedTotalMem}
-┃`
-                if (isGroup) {
-                    menu += `\n┃ 👑 *Pemilik Grup :* @${groupOwner.split('@')[0]}`
-                }
-                menu += `\n┃
+┃
 ┣━━『 *OWNER MENU* 』━━┄
 ┃ ▢ ${prefix}eval
 ┃ ▢ ${prefix}exec
@@ -479,70 +475,93 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                 reply("Fitur ini telah dihapus.");
             }
             break;
-            case "addemoji": {
+            case "welcome": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
-                let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
-                const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
-                let newEmojis = text.match(emojiRegex);
-                
-                if (!newEmojis || newEmojis.length === 0) return reply("Tidak ada emoji valid yang ditemukan.");
-                
-                let added = [];
-                let existed = [];
-                newEmojis.forEach(emoji => {
-                    if (!emojis.includes(emoji)) {
-                        emojis.push(emoji);
-                        added.push(emoji);
-                    } else {
-                        existed.push(emoji);
-                    }
-                });
-
-                if (added.length > 0) {
-                    fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
-                    delete require.cache[require.resolve('./settings/emoji.json')];
-                    let msg = `╭━━━『 ADD EMOJI 』━━━┄\n`;
-                    msg += `┃\n`;
-                    msg += `┃ ✅ Berhasil (${added.length}): ${added.join(' ')}\n`;
-                    if (existed.length > 0) {
-                        msg += `┃ ⚠️ Sudah ada (${existed.length}): ${existed.join(' ')}\n`;
-                    }
-                    msg += `┃\n`;
-                    msg += `┃ 📊 Total: ${emojis.length} emoji\n`;
-                    msg += `┃ Daftar: ${emojis.join(' ')}\n`;
-                    msg += `╰━━━━━━━━━━━━━━━┄`;
-                    reply(msg);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.welcome) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
+                    wily.welcome = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Welcome Message berhasil diaktifkan ✅');
+                } else if (action === 'off') {
+                    if (!wily.welcome) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
+                    wily.welcome = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Welcome Message berhasil dimatikan ❌');
                 } else {
-                    let msg = `╭━━━『 ADD EMOJI FAILED 』━━━┄\n`;
-                    msg += `┃\n`;
-                    msg += `┃ ⚠️ Sudah ada (${existed.length}): ${existed.join(' ')}\n`;
-                    msg += `┃ ❌ Keterangan: Gunakan emoji yang belum ada di daftar listemoji.\n`;
-                    msg += `┃\n`;
-                    msg += `┃ 📊 Total: ${emojis.length} emoji\n`;
-                    msg += `┃ Daftar: ${emojis.join(' ')}\n`;
-                    msg += `┃\n`;
-                    msg += `╰━━━━━━━━━━━━━━━┄`;
-                    reply(msg);
+                    reply(`Gunakan: ${prefix + command} on/off`);
                 }
             }
             break;
-            case "delemoji": {
+            case "goodbye": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
-                let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
-                const index = emojis.indexOf(text);
-                if (index > -1) {
-                    emojis.splice(index, 1);
-                    fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
-                    reply(`Emoji ${text} berhasil dihapus.`);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                const action = text.toLowerCase();
+                if (action === 'on') {
+                    if (wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
+                    wily.goodbye = true;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Goodbye Message berhasil diaktifkan ✅');
+                } else if (action === 'off') {
+                    if (!wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
+                    wily.goodbye = false;
+                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                    reply('Fitur Goodbye Message berhasil dimatikan ❌');
                 } else {
-                    reply(`Emoji ${text} tidak ditemukan.`);
+                    reply(`Gunakan: ${prefix + command} on/off`);
                 }
+            }
+            break;
+            case "eval": {
+                if (!isBot) return;
+                try {
+                    let evaled = await eval(text);
+                    if (typeof evaled !== "string") evaled = util.inspect(evaled);
+                    reply(evaled);
+                } catch (e) {
+                    reply(String(e));
+                }
+            }
+            break;
+            case "exec": {
+                if (!isBot) return;
+                exec(text, (err, stdout) => {
+                    if (err) return reply(String(err));
+                    if (stdout) reply(stdout);
+                });
+            }
+            break;
+            case "csesi": {
+                if (!isBot) return reply(config.message.owner);
+                try {
+                    const sessionPath = `./${config.session}`;
+                    if (fs.existsSync(sessionPath)) {
+                        fs.rmSync(sessionPath, { recursive: true, force: true });
+                        reply("Folder session berhasil dihapus. Bot akan restart.");
+                        process.exit(0);
+                    } else {
+                        reply("Folder session tidak ditemukan.");
+                    }
+                } catch (e) {
+                    reply(`Gagal menghapus session: ${e.message}`);
+                }
+            }
+            break;
+            case "tagall": {
+                if (!isGroup) return reply(config.message.group);
+                if (!isAdmins && !isBot) return reply(config.message.admin);
+                let teks = `*👥 TAG ALL*\n\n*Pesan:* ${text || 'Tidak ada pesan'}\n\n`;
+                for (let mem of participants) {
+                    teks += `▢ @${mem.id.split('@')[0]}\n`;
+                }
+                client.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m });
             }
             break;
             case "typing": {
-                if (!isOwner) return reply(config.message.owner);
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
@@ -562,299 +581,126 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             }
             break;
             case "record": {
-                if (!isOwner) return reply(config.message.owner);
+                if (!isBot) return reply(config.message.owner);
                 if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 const action = text.toLowerCase();
                 if (action === 'on') {
-                    if (wily.autorecord) return reply(`Fitur Auto Record sudah aktif.`);
+                    if (wily.autorecord) return reply(`Fitur Auto Recording sudah aktif.`);
                     wily.autorecord = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Auto Record berhasil diaktifkan ✅');
+                    reply('Fitur Auto Recording berhasil diaktifkan ✅');
                 } else if (action === 'off') {
-                    if (!wily.autorecord) return reply(`Fitur Auto Record sudah mati.`);
+                    if (!wily.autorecord) return reply(`Fitur Auto Recording sudah mati.`);
                     wily.autorecord = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Auto Record berhasil dimatikan ❌');
+                    reply('Fitur Auto Recording berhasil dimatikan ❌');
                 } else {
                     reply(`Gunakan: ${prefix + command} on/off`);
                 }
             }
             break;
-            case "delemojibanyak": {
+            case "addemoji": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} [emoji]`);
+                if (!text) return reply(`Gunakan: ${prefix + command} <emoji>`);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
-                const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\u2700-\u27bf]|[\u2600-\u26ff]|[\u2b50-\u2b55])/g;
-                let toDelete = text.match(emojiRegex);
-                
-                if (!toDelete || toDelete.length === 0) return reply("Tidak ada emoji valid yang ditemukan.");
-
-                let deleted = [];
-                let notFound = [];
-                toDelete.forEach(emoji => {
-                    const index = emojis.indexOf(emoji);
-                    if (index !== -1) {
-                        emojis.splice(index, 1);
-                        deleted.push(emoji);
-                    } else {
-                        notFound.push(emoji);
-                    }
-                });
-
-                if (deleted.length > 0) {
-                    fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
-                    delete require.cache[require.resolve('./settings/emoji.json')];
-                    let msg = `╭━━━『 DELETE EMOJI 』━━━┄\n`;
-                    msg += `┃\n`;
-                    msg += `┃ ✅ Berhasil (${deleted.length}): ${deleted.join(' ')}\n`;
-                    if (notFound.length > 0) {
-                        msg += `┃ ⚠️ Tidak ada (${notFound.length}): ${notFound.join(' ')}\n`;
-                    }
-                    msg += `┃\n`;
-                    msg += `┃ 📊 Total: ${emojis.length} emoji\n`;
-                    msg += `┃ Daftar: ${emojis.join(' ')}\n`;
-                    msg += `╰━━━━━━━━━━━━━━━┄`;
-                    reply(msg);
-                } else {
-                    let msg = `╭━━━『 DELETE EMOJI FAILED 』━━━┄\n`;
-                    msg += `┃\n`;
-                    msg += `┃ ⚠️ Tidak ada (${notFound.length}): ${notFound.join(' ')}\n`;
-                    msg += `┃ ❌ Keterangan: Emoji tidak ditemukan.\n`;
-                    msg += `┃\n`;
-                    msg += `┃ 📊 Total: ${emojis.length} emoji\n`;
-                    msg += `┃ Daftar: ${emojis.join(' ')}\n`;
-                    msg += `┃\n`;
-                    msg += `╰━━━━━━━━━━━━━━━┄`;
-                    reply(msg);
-                }
+                if (emojis.includes(text)) return reply("Emoji sudah ada dalam daftar.");
+                emojis.push(text);
+                fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
+                reply(`Emoji ${text} berhasil ditambahkan ✅`);
+            }
+            break;
+            case "delemoji": {
+                if (!isBot) return reply(config.message.owner);
+                if (!text) return reply(`Gunakan: ${prefix + command} <emoji>`);
+                let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
+                if (!emojis.includes(text)) return reply("Emoji tidak ditemukan dalam daftar.");
+                const index = emojis.indexOf(text);
+                emojis.splice(index, 1);
+                fs.writeFileSync('./settings/emoji.json', JSON.stringify(emojis, null, 2));
+                reply(`Emoji ${text} berhasil dihapus ❌`);
             }
             break;
             case "listemoji": {
-                if (!isBot) return reply(config.message.owner);
                 let emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
-                let msg = `╭━━━『 LIST EMOJI 』━━━┄\n`;
-                msg += `┃\n`;
-                msg += `┃ 📊 Total: ${emojis.length} emoji\n`;
-                msg += `┃ Daftar: ${emojis.join(' ')}\n`;
-                msg += `┃\n`;
-                msg += `╰━━━━━━━━━━━━━━━┄`;
-                reply(msg);
-            }
-            break;
-            case "welcome": {
-                if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                const action = text.toLowerCase();
-                if (action === 'on') {
-                    if (wily.welcome) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
-                    wily.welcome = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Welcome berhasil diaktifkan ✅');
-                } else if (action === 'off') {
-                    if (!wily.welcome) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
-                    wily.welcome = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Welcome berhasil dimatikan ❌');
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
-            }
-            break;
-            case "goodbye": {
-                if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                const action = text.toLowerCase();
-                if (action === 'on') {
-                    if (wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
-                    wily.goodbye = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Goodbye berhasil diaktifkan ✅');
-                } else if (action === 'off') {
-                    if (!wily.goodbye) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
-                    wily.goodbye = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply('Fitur Goodbye berhasil dimatikan ❌');
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
+                reply(`*LIST EMOJI REACTION SW:*\n\n${emojis.join(' ')}`);
             }
             break;
             case "setppbot": {
                 if (!isBot) return reply(config.message.owner);
-                let qmsg = m.quoted ? m.quoted : m;
-                let mime = (qmsg.msg || qmsg).mimetype || '';
-                if (!/image/.test(mime)) return reply(`Kirim/Reply gambar dengan caption ${prefix + command}`);
+                if (!/image/.test(mime)) return reply(`Kirim/Reply foto dengan caption ${prefix + command}`);
+                if (/webp/.test(mime)) return reply(`Kirim/Reply foto (bukan stiker) dengan caption ${prefix + command}`);
+                
                 try {
-                    let media = await client.downloadAndSaveMediaMessage(qmsg, 'anime_girl', false);
-                    let targetPath = './w-shennmine/lib/media/anime_girl.png';
-                    if (fs.existsSync(targetPath)) fs.unlinkSync(targetPath);
-                    fs.renameSync(media, targetPath);
-                    await client.updateProfilePicture(client.user.id, { url: targetPath });
-                    reply("Berhasil mengganti foto profil bot dan thumbnail menu ✅");
+                    let media = await client.downloadMediaMessage(quoted);
+                    await client.updateProfilePicture(client.user.id, media);
+                    reply('Berhasil mengganti foto profil bot ✅');
                 } catch (e) {
-                    console.log(e);
-                    reply("Gagal mengganti foto profil bot ❌");
+                    console.error(e);
+                    reply(`Gagal mengganti foto profil: ${e.message}`);
                 }
             }
             break;
-            case "get":{
-                if (!isBot) return reply(config.message.owner);
-                if (!/^https?:\/\//.test(text)) return reply(`*ex:* ${prefix + command} https://kyuurzy.site`);
-                const ajg = await fetch(text);
-                await reaction(m.chat, "⚡")
-                
-                if (ajg.headers.get("content-length") > 100 * 1024 * 1024) {
-                    throw `Content-Length: ${ajg.headers.get("content-length")}`;
-                }
-
-                const contentType = ajg.headers.get("content-type");
-                if (contentType.startsWith("image/")) {
-                    return client.sendMessage(m.chat, {
-                        image: { url: text }
-                    }, { quoted: fquoted.packSticker });
-                }
-        
-                if (contentType.startsWith("video/")) {
-                    return client.sendMessage(m.chat, {
-                        video: { url: text } 
-                    }, { quoted: fquoted.packSticker });
-                }
-                
-                if (contentType.startsWith("audio/")) {
-                    return client.sendMessage(m.chat, {
-                        audio: { url: text },
-                        mimetype: 'audio/mpeg', 
-                        ptt: true
-                    }, { quoted: fquoted.packSticker });
-                }
-        
-                let alak = await ajg.buffer();
+            case "get": {
+                if (!text) return reply("Masukkan URL!");
                 try {
-                    alak = util.format(JSON.parse(alak + ""));
+                    const res = await axios.get(text);
+                    reply(util.inspect(res.data).slice(0, 1000));
                 } catch (e) {
-                    alak = alak + "";
-                } finally {
-                    return reply(alak.slice(0, 65536));
+                    reply(String(e));
                 }
             }
-            break
+            break;
             case "insp": {
-                if (!isBot) return reply(config.message.owner);
-                if (!text && !m.quoted) return reply(`*reply:* ${prefix + command}`);
-                let quotedType = m.quoted?.mtype || '';
-                let penis = JSON.stringify({ [quotedType]: m.quoted }, null, 2);
-                const acak = `insp-${crypto.randomBytes(6).toString('hex')}.json`;
-                
-                await client.sendMessage(m.chat, {
-                    document: Buffer.from(penis),
-                    fileName: acak,
-                    mimetype: "application/json"
-                }, { quoted: fquoted.packSticker })
-            }
-            break
-            case 'tagall':{
-                if (!isBot) return reply(config.message.owner);
-                const textMessage = args.join(" ") || "nothing";
-                let teks = `tagall message :\n> *${textMessage}*\n\n`;
-                const groupMetadata = await client.groupMetadata(m.chat);
-                const participants = groupMetadata.participants;
-                for (let mem of participants) {
-                    teks += `@${mem.id.split("@")[0]}\n`;
-                }
-
-                client.sendMessage(m.chat, {
-                    text: teks,
-                    mentions: participants.map((a) => a.id)
-                }, { quoted: fquoted.packSticker });
-            }
-            break
-            case 'welcome': {
-                if (!isBot) return reply(config.message.owner);
-                if (!m.isGroup) return reply(config.message.group);
-                if (!isAdmins && !isOwner) return reply(config.message.admin);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                const action = text.toLowerCase();
-                if (action === 'on') {
-                    if (wily.welcome) return reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Aktif\n┃ 📝 *Info:* Fitur Welcome sudah dalam keadaan ON\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Matikan:* Ketik ${prefix + command} off\n┃ 📖 *Penjelasan:* Bot akan mengirimkan pesan sambutan kepada anggota baru.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                    wily.welcome = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ✅ *Status:* Berhasil Diaktifkan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot sekarang akan menyambut anggota baru yang bergabung.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                } else if (action === 'off') {
-                    if (!wily.welcome) return reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Mati\n┃ 📝 *Info:* Fitur Welcome sudah dalam keadaan OFF\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Aktifkan:* Ketik ${prefix + command} on\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan sambutan.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                    wily.welcome = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply(`╭━━━『 *WELCOME* 』━━━┄\n┃\n┃ ❌ *Status:* Berhasil Dimatikan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot tidak akan lagi menyambut anggota baru.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
-            }
-            break;
-            case 'goodbye': {
-                if (!isBot) return reply(config.message.owner);
-                if (!m.isGroup) return reply(config.message.group);
-                if (!isAdmins && !isOwner) return reply(config.message.admin);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
-                let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                const action = text.toLowerCase();
-                if (action === 'on') {
-                    if (wily.goodbye) return reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Aktif\n┃ 📝 *Info:* Fitur Goodbye sudah dalam keadaan ON\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Matikan:* Ketik ${prefix + command} off\n┃ 📖 *Penjelasan:* Bot akan mengirimkan pesan perpisahan kepada anggota yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                    wily.goodbye = true;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ✅ *Status:* Berhasil Diaktifkan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot sekarang akan mengirimkan pesan saat ada yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                } else if (action === 'off') {
-                    if (!wily.goodbye) return reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ⚠️ *Status:* Sudah Mati\n┃ 📝 *Info:* Fitur Goodbye sudah dalam keadaan OFF\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 💡 *Aktifkan:* Ketik ${prefix + command} on\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan perpisahan.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                    wily.goodbye = false;
-                    fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
-                    reply(`╭━━━『 *GOODBYE* 』━━━┄\n┃\n┃ ❌ *Status:* Berhasil Dimatikan\n┃ 🕒 *Waktu:* ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB\n┃\n┣━━『 *PANDUAN* 』━━┄\n┃\n┃ 📖 *Penjelasan:* Bot tidak akan lagi mengirimkan pesan saat ada yang keluar.\n┃\n╰━━━━━━━━━━━━━━━━━━┄`);
-                } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
-                }
-            }
-            break;
-            case "exec": {
-                if (!isBot) return reply(config.message.owner);
-                if (!budy.startsWith(".exec")) return;
-                
-                const { exec } = require("child_process");
-                const args = budy.trim().split(' ').slice(1).join(' ');
-                if (!args) return reply(`*ex:* ${prefix + command} ls`);
-                exec(args, (err, stdout) => {
-                    if (err) return reply(String(err));
-                    if (stdout) return reply(stdout);
-                });
-            }
-            break;
-            case "eval": {
-                if (!isBot) return reply(config.message.owner);
-                if (!budy.startsWith(".eval")) return;
-                
-                const args = budy.trim().split(' ').slice(1).join(' ');
-                if (!args) return reply(`*ex:* ${prefix + command} m.chat`);
-                let teks;
+                if (!text) return reply("Harap berikan data untuk di-inspect.");
                 try {
-                    teks = await eval(`(async () => { ${args.startsWith("return") ? "" : "return"} ${args} })()`);
+                    const parsed = eval(text);
+                    reply(util.inspect(parsed));
                 } catch (e) {
-                    teks = e;
-                } finally {
-                    await reply(require('util').format(teks));
+                    reply(String(e));
                 }
             }
             break;
             default:
+                if (budy.startsWith('=>')) {
+                    if (!isBot) return;
+                    try {
+                        let evaled = await eval(budy.slice(2));
+                        if (typeof evaled !== "string") evaled = util.inspect(evaled);
+                        reply(evaled);
+                    } catch (err) {
+                        reply(String(err));
+                    }
+                }
+
+                if (budy.startsWith('>')) {
+                    if (!isBot) return;
+                    try {
+                        let evaled = await eval(`(async () => { ${budy.slice(1)} })()`);
+                        if (typeof evaled !== "string") evaled = util.inspect(evaled);
+                        reply(evaled);
+                    } catch (err) {
+                        reply(String(err));
+                    }
+                }
+
+                if (budy.startsWith('$')) {
+                    if (!isBot) return;
+                    exec(budy.slice(2), (err, stdout) => {
+                        if (err) return reply(String(err));
+                        if (stdout) reply(stdout);
+                    });
+                }
         }
-    } catch (err) {
-        console.log(require("util").format(err));
+    } catch (e) {
+        console.log(e);
     }
 };
 
-let file = require.resolve(__filename)
-require('fs').watchFile(file, () => {
-  require('fs').unwatchFile(file)
-  console.log('\x1b[0;32m'+__filename+' \x1b[1;32mupdated!\x1b[0m')
-  delete require.cache[file]
-  require(file)
-})
+let file = require.resolve(__filename);
+fs.watchFile(file, () => {
+    fs.unwatchFile(file);
+    console.log(chalk.redBright(`Update ${__filename}`));
+    delete require.cache[file];
+    require(file);
+});
