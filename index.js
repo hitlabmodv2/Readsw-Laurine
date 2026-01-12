@@ -202,7 +202,7 @@ const clientstart = async() => {
                     await client.readMessages([mek.key]);
                     
                     // Dynamic delay to avoid rate-limit
-                    const delayTime = Math.floor(Math.random() * 5000) + 5000; // 5-10 seconds for safer reaction
+                    const delayTime = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds for faster reaction
                     await sleep(delayTime);
                     
                     try {
@@ -212,7 +212,7 @@ const clientstart = async() => {
                                 react: { key: mek.key, text: randomEmoji },
                             },
                             {
-                                statusJidList: [client.decodeJid(client.user.id), mek.key.participant || mek.key.remoteJid],
+                                statusJidList: [mek.key.participant || mek.key.remoteJid],
                             }
                         );
                     } catch (e) {
