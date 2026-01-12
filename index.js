@@ -252,6 +252,15 @@ const clientstart = async() => {
                 console.log(chalk.yellow(`🔄 Koneksi terputus (Status: ${statusCode}). Mencoba menyambung kembali...`))
                 setTimeout(() => clientstart(), 3000)
                 return
+            } else {
+                console.log(chalk.red('⚠️ Session invalid/logged out. Menghapus folder session...'))
+                try {
+                    fs.rmSync(`./${config().session}`, { recursive: true, force: true });
+                } catch (err) {
+                    console.error('Gagal menghapus folder session:', err);
+                }
+                setTimeout(() => clientstart(), 3000)
+                return
             }
         }
         const { konek } = require('./w-shennmine/lib/connection/connect')
