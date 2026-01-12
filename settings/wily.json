@@ -2,8 +2,8 @@
   "reactionsw": true,
   "public": true,
   "terminal": true,
-  "welcome": false,
-  "goodbye": false,
+  "welcome": true,
+  "goodbye": true,
   "autotyping": false,
   "autorecord": true,
   "notifgc": false
