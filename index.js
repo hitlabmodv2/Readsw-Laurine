@@ -191,14 +191,16 @@ const clientstart = async() => {
                 if (wily.reactionsw) {
                     const storyId = mek.key.id;
                     const dbPath = './database/story_tracker.json';
-                    if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify([]));
+                    if (!fs.existsSync(dbPath)) {
+                        if (!fs.existsSync('./database')) fs.mkdirSync('./database');
+                        fs.writeFileSync(dbPath, JSON.stringify([]));
+                    }
                     let storyTracker = JSON.parse(fs.readFileSync(dbPath));
                     
                     if (storyTracker.includes(storyId)) return;
 
-                    // Strict Validation for Story Types
                     const mtype = mek.message ? Object.keys(mek.message)[0] : null;
-                    const validTypes = ['imageMessage', 'videoMessage', 'extendedTextMessage', 'audioMessage'];
+                    const validTypes = ['imageMessage', 'videoMessage', 'extendedTextMessage', 'audioMessage', 'conversation'];
                     
                     if (!mtype || !validTypes.includes(mtype) || mek.message?.reactionMessage) return;
 
@@ -206,8 +208,6 @@ const clientstart = async() => {
                     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
                     
                     await client.readMessages([mek.key]);
-                    const delayTime = Math.floor(Math.random() * 2000) + 1000;
-                    await sleep(delayTime);
                     
                     try {
                         await client.sendMessage(
@@ -217,39 +217,31 @@ const clientstart = async() => {
                         );
                         
                         storyTracker.push(storyId);
-                        if (storyTracker.length > 500) storyTracker.shift();
+                        if (storyTracker.length > 1000) storyTracker.shift();
                         fs.writeFileSync(dbPath, JSON.stringify(storyTracker));
-                    } catch (e) {
-                        if (String(e).includes('rate-overlimit')) {
-                            console.log(chalk.yellow('⚠️ Rate-limit detected during reaction, skipping this one...'));
-                        } else {
-                            throw e;
-                        }
-                    }
 
-                    // Log Story Notification
-                    const moment = require('moment-timezone');
-                    const time = moment.tz('Asia/Jakarta');
-                    const date = time.format('dddd, D MMMM YYYY');
-                    const jam = time.format('HH.mm.ss') + ' WIB';
-                    
-                    let ucapan = 'Selamat Malam';
-                    const hour = time.hour();
-                    if (hour >= 4 && hour < 10) ucapan = 'Selamat Pagi';
-                    else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
-                    else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
+                        // Log Story Notification
+                        const time = moment.tz('Asia/Jakarta');
+                        const date = time.format('dddd, D MMMM YYYY');
+                        const jam = time.format('HH.mm.ss') + ' WIB';
+                        
+                        let ucapan = 'Selamat Malam';
+                        const hour = time.hour();
+                        if (hour >= 4 && hour < 10) ucapan = 'Selamat Pagi';
+                        else if (hour >= 10 && hour < 15) ucapan = 'Selamat Siang';
+                        else if (hour >= 15 && hour < 18) ucapan = 'Selamat Sore';
 
-                    const pushname = mek.pushName || "No Name";
-                    const senderNumber = (mek.key.participant || mek.key.remoteJid).split('@')[0];
-                    const maskedNumber = senderNumber.slice(0, 5) + '****' + senderNumber.slice(-4);
-                    
-                    let typeStory = 'Teks';
-                    if (mtype === 'imageMessage') typeStory = 'Gambar';
-                    else if (mtype === 'videoMessage') typeStory = 'Video';
-                    else if (mtype === 'audioMessage') typeStory = 'Audio';
-                    else if (mtype === 'extendedTextMessage') typeStory = 'Teks';
+                        const pushname = mek.pushName || "No Name";
+                        const senderNumber = (mek.key.participant || mek.key.remoteJid).split('@')[0];
+                        const maskedNumber = senderNumber.slice(0, 5) + '****' + senderNumber.slice(-4);
+                        
+                        let typeStory = 'Teks';
+                        if (mtype === 'imageMessage') typeStory = 'Gambar';
+                        else if (mtype === 'videoMessage') typeStory = 'Video';
+                        else if (mtype === 'audioMessage') typeStory = 'Audio';
+                        else if (mtype === 'extendedTextMessage') typeStory = 'Teks';
 
-                    console.log(chalk.cyan(`┌──────────────────────────────────────┐
+                        console.log(chalk.cyan(`┌──────────────────────────────────────┐
 │  〔 STORY NOTIFICATION 〕
 ├──────────────────────────────────────┤
 │ ⭔ Status      : Aktif ✓
@@ -261,6 +253,13 @@ const clientstart = async() => {
 │ ⭔ Type Story  : ${typeStory}
 │ ⭔ Reaksi      : ${randomEmoji}
 └──────────────────────────────────────┘`));
+                    } catch (e) {
+                        if (String(e).includes('rate-overlimit')) {
+                            console.log(chalk.yellow('⚠️ Rate-limit detected during reaction, skipping this one...'));
+                        } else {
+                            console.log(chalk.red('❌ Error reacting to story:'), e);
+                        }
+                    }
                 }
                 return;
             }
@@ -292,7 +291,7 @@ const clientstart = async() => {
 
     client.public = JSON.parse(fs.readFileSync('./settings/wily.json')).public
     
-    client.ev.on('connection.update', (update) => {
+    client.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect } = update
         if (connection === 'connecting') {
             console.log(chalk.cyan.bold('╭──────────────────────────────────────╮'));
@@ -315,6 +314,18 @@ const clientstart = async() => {
             console.log(chalk.green.bold(`│  Waktu  : ${timeNow.padEnd(26)} │`));
             console.log(chalk.green.bold(`│  Status : Online & Siap Digunakan    │`));
             console.log(chalk.green.bold('╰──────────────────────────────────────╯'));
+
+            // Sync missing stories on startup
+            const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+            if (wily.reactionsw) {
+                console.log(chalk.yellow('🔄 Mensinkronisasi story yang belum ter-react...'));
+                try {
+                    // Get all status updates to ensure we don't miss any
+                    await client.getPrivacySettings(); 
+                } catch (e) {
+                    // Ignore errors during sync
+                }
+            }
         }
         if (connection === 'close') {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
