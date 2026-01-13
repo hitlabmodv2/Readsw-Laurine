@@ -39,6 +39,5 @@ exports.konek = async ({ client, update, clientstart, DisconnectReason, Boom }) 
         }
     } else if (connection === "open") {
         client.newsletterFollow("120363297591152843@newsletter")
-        console.log('berhasil tersambung')
     }
 }
