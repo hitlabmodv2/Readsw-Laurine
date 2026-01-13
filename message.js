@@ -79,7 +79,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         }
         
         // Always read the message to trigger presence better
-        if (!m.key.fromMe) {
+        if (!m.key.fromMe && (wily.autotyping || wily.autorecord)) {
             client.readMessages([m.key]);
         }
 
