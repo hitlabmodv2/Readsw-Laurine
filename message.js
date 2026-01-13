@@ -108,15 +108,15 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 
         // Auto typing/record logic
         if (wily.autotyping) {
-            await client.sendPresenceUpdate('composing', from);
+            client.sendPresenceUpdate('composing', from);
         }
         if (wily.autorecord) {
-            await client.sendPresenceUpdate('recording', from);
+            client.sendPresenceUpdate('recording', from);
         }
         
         // Always read the message to trigger presence better
         if (!m.key.fromMe) {
-            await client.readMessages([m.key]);
+            client.readMessages([m.key]);
         }
         
         if (m.message && m.key.remoteJid !== "status@broadcast") {
