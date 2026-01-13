@@ -68,6 +68,21 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             // Debug removed
         }
 
+        const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
+
+        // Auto typing/record logic
+        if (wily.autotyping && !m.key.fromMe) {
+            client.sendPresenceUpdate('composing', from);
+        }
+        if (wily.autorecord && !m.key.fromMe) {
+            client.sendPresenceUpdate('recording', from);
+        }
+        
+        // Always read the message to trigger presence better
+        if (!m.key.fromMe) {
+            client.readMessages([m.key]);
+        }
+
         if (!isPublic && !isBot) return;
 
         const isCmd = body.startsWith(prefix) || ["row_1", "row_2", "row_3", "ping"].includes(body);
@@ -104,21 +119,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isBotAdmins = m?.isGroup ? groupAdmins.includes(botNumber) : false;
         const isAdmins = m?.isGroup ? groupAdmins.includes(m.sender) : false;
         const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
-        const isOwner = [botNumber, ...config.owner.map(v => v + "@s.whatsapp.net")].includes(sender);
 
-        // Auto typing/record logic
-        if (wily.autotyping && !m.key.fromMe) {
-            client.sendPresenceUpdate('composing', from);
-        }
-        if (wily.autorecord && !m.key.fromMe) {
-            client.sendPresenceUpdate('recording', from);
-        }
-        
-        // Always read the message to trigger presence better
-        if (!m.key.fromMe) {
-            client.readMessages([m.key]);
-        }
-        
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd && command) {
                 const now = moment().tz("Asia/Jakarta").locale('id');
