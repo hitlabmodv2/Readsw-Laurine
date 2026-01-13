@@ -188,33 +188,36 @@ const clientstart = async() => {
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
                 const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (wily.reactionsw) {
+                    const storyId = mek.key.id;
+                    const dbPath = './database/story_tracker.json';
+                    if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify([]));
+                    let storyTracker = JSON.parse(fs.readFileSync(dbPath));
+                    
+                    if (storyTracker.includes(storyId)) return;
+
                     // Strict Validation for Story Types
                     const mtype = mek.message ? Object.keys(mek.message)[0] : null;
                     const validTypes = ['imageMessage', 'videoMessage', 'extendedTextMessage', 'audioMessage'];
                     
-                    // Ignore reaction messages and other non-story types
                     if (!mtype || !validTypes.includes(mtype) || mek.message?.reactionMessage) return;
 
                     const emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
                     
-                    // Improved handling: read message only
                     await client.readMessages([mek.key]);
-                    
-                    // Dynamic delay to avoid rate-limit
-                    const delayTime = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds for faster reaction
+                    const delayTime = Math.floor(Math.random() * 2000) + 1000;
                     await sleep(delayTime);
                     
                     try {
                         await client.sendMessage(
                             'status@broadcast',
-                            {
-                                react: { key: mek.key, text: randomEmoji },
-                            },
-                            {
-                                statusJidList: [mek.key.participant || mek.key.remoteJid],
-                            }
+                            { react: { key: mek.key, text: randomEmoji } },
+                            { statusJidList: [mek.key.participant || mek.key.remoteJid] }
                         );
+                        
+                        storyTracker.push(storyId);
+                        if (storyTracker.length > 500) storyTracker.shift();
+                        fs.writeFileSync(dbPath, JSON.stringify(storyTracker));
                     } catch (e) {
                         if (String(e).includes('rate-overlimit')) {
                             console.log(chalk.yellow('⚠️ Rate-limit detected during reaction, skipping this one...'));
@@ -290,6 +293,24 @@ const clientstart = async() => {
     
     client.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update
+        if (connection === 'connecting') {
+            console.log(chalk.cyan.bold('\n╭──────────────────────────────────────╮'));
+            console.log(chalk.cyan.bold('│       MENYAMBUNGKAN KE WHATSAPP      │'));
+            console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
+            console.log(chalk.cyan.bold(`│  Waktu: ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB            │`));
+            console.log(chalk.cyan.bold('│  Status: Sedang mencoba terhubung... │'));
+            console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
+        }
+        if (connection === 'open') {
+            console.log(chalk.green.bold('\n╭──────────────────────────────────────╮'));
+            console.log(chalk.green.bold('│          BERHASIL TERSAMBUNG         │'));
+            console.log(chalk.green.bold('├──────────────────────────────────────┤'));
+            console.log(chalk.green.bold(`│  User  : ${client.user.name || client.user.id.split(':')[0]}                │`));
+            console.log(chalk.green.bold(`│  JID   : ${client.user.id.split(':')[0]}@s.whatsapp.net │`));
+            console.log(chalk.green.bold(`│  Waktu : ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB            │`));
+            console.log(chalk.green.bold('│  Status: Online & Siap Digunakan     │'));
+            console.log(chalk.green.bold('╰──────────────────────────────────────╯\n'));
+        }
         if (connection === 'close') {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
             
