@@ -4,3 +4,4 @@ sessions/
 package-lock.json
 .upm/
 attached_assets/
+database/story_tracker.json
