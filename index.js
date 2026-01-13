@@ -296,20 +296,24 @@ const clientstart = async() => {
         const { connection, lastDisconnect } = update
         if (connection === 'connecting') {
             console.log(chalk.cyan.bold('\n╭──────────────────────────────────────╮'));
-            console.log(chalk.cyan.bold('│       MENYAMBUNGKAN KE WHATSAPP      │'));
+            console.log(chalk.cyan.bold('│       STATUS KONEKSI WHATSAPP        │'));
             console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
-            console.log(chalk.cyan.bold(`│  Waktu: ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB            │`));
-            console.log(chalk.cyan.bold('│  Status: Sedang mencoba terhubung... │'));
+            console.log(chalk.cyan.bold(`│  Waktu  : ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB           │`));
+            console.log(chalk.cyan.bold('│  Status : Sedang menyambungkan...    │'));
             console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
         }
         if (connection === 'open') {
+            const userName = client.user.name || client.user.id.split(':')[0];
+            const userJID = client.user.id.split(':')[0] + '@s.net';
+            const timeNow = moment().tz("Asia/Jakarta").format("HH:mm:ss") + " WIB";
+            
             console.log(chalk.green.bold('\n╭──────────────────────────────────────╮'));
-            console.log(chalk.green.bold('│          BERHASIL TERSAMBUNG         │'));
+            console.log(chalk.green.bold('│       BOT BERHASIL TERHUBUNG         │'));
             console.log(chalk.green.bold('├──────────────────────────────────────┤'));
-            console.log(chalk.green.bold(`│  User  : ${client.user.name || client.user.id.split(':')[0]}                │`));
-            console.log(chalk.green.bold(`│  JID   : ${client.user.id.split(':')[0]}@s.whatsapp.net │`));
-            console.log(chalk.green.bold(`│  Waktu : ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB            │`));
-            console.log(chalk.green.bold('│  Status: Online & Siap Digunakan     │'));
+            console.log(chalk.green.bold(`│  User   : ${userName.padEnd(26)} │`));
+            console.log(chalk.green.bold(`│  JID    : ${userJID.padEnd(26)} │`));
+            console.log(chalk.green.bold(`│  Waktu  : ${timeNow.padEnd(26)} │`));
+            console.log(chalk.green.bold(`│  Status : Online & Siap Digunakan    │`));
             console.log(chalk.green.bold('╰──────────────────────────────────────╯\n'));
         }
         if (connection === 'close') {
