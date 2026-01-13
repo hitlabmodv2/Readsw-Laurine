@@ -114,6 +114,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             await client.sendPresenceUpdate('recording', from);
         }
         
+        // Always read the message to trigger presence better
+        if (!m.key.fromMe) {
+            await client.readMessages([m.key]);
+        }
+        
         if (m.message && m.key.remoteJid !== "status@broadcast") {
             if (isCmd && command) {
                 const now = moment().tz("Asia/Jakarta").locale('id');
