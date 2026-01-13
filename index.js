@@ -295,26 +295,26 @@ const clientstart = async() => {
     client.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update
         if (connection === 'connecting') {
-            console.log(chalk.cyan.bold('\n╭──────────────────────────────────────╮'));
+            console.log(chalk.cyan.bold('╭──────────────────────────────────────╮'));
             console.log(chalk.cyan.bold('│       STATUS KONEKSI WHATSAPP        │'));
             console.log(chalk.cyan.bold('├──────────────────────────────────────┤'));
             console.log(chalk.cyan.bold(`│  Waktu  : ${moment().tz("Asia/Jakarta").format("HH:mm:ss")} WIB           │`));
             console.log(chalk.cyan.bold('│  Status : Sedang menyambungkan...    │'));
-            console.log(chalk.cyan.bold('╰──────────────────────────────────────╯\n'));
+            console.log(chalk.cyan.bold('╰──────────────────────────────────────╯'));
         }
         if (connection === 'open') {
             const userName = client.user.name || client.user.id.split(':')[0];
             const userJID = client.user.id.split(':')[0] + '@s.net';
             const timeNow = moment().tz("Asia/Jakarta").format("HH:mm:ss") + " WIB";
             
-            console.log(chalk.green.bold('\n╭──────────────────────────────────────╮'));
+            console.log(chalk.green.bold('╭──────────────────────────────────────╮'));
             console.log(chalk.green.bold('│       BOT BERHASIL TERHUBUNG         │'));
             console.log(chalk.green.bold('├──────────────────────────────────────┤'));
             console.log(chalk.green.bold(`│  User   : ${userName.padEnd(26)} │`));
             console.log(chalk.green.bold(`│  JID    : ${userJID.padEnd(26)} │`));
             console.log(chalk.green.bold(`│  Waktu  : ${timeNow.padEnd(26)} │`));
             console.log(chalk.green.bold(`│  Status : Online & Siap Digunakan    │`));
-            console.log(chalk.green.bold('╰──────────────────────────────────────╯\n'));
+            console.log(chalk.green.bold('╰──────────────────────────────────────╯'));
         }
         if (connection === 'close') {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
