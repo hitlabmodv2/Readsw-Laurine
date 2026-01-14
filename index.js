@@ -344,8 +344,9 @@ const clientstart = async() => {
             const statusCode = (lastDisconnect?.error)?.output?.statusCode
             
             if (statusCode === DisconnectReason.connectionReplaced) {
-                console.log(chalk.red('⚠️ Koneksi digantikan oleh sesi lain (Status: 440). Menunggu 10 detik sebelum mencoba lagi...'))
-                setTimeout(() => clientstart(), 10000)
+                // Connection replaced means the same session is being used elsewhere
+                // Instead of immediately reconnecting, we should probably stop the old process or just log it
+                console.log(chalk.red('⚠️ Koneksi digantikan oleh sesi lain (Status: 440).'))
                 return
             }
             
