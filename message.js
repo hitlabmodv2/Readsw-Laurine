@@ -337,7 +337,8 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 ┣━━『 *UTILITIES* 』━━┄
 ┃ ▢ ${prefix}mode public/self
 ┃ ▢ ${prefix}terminal
-┃ ▢ ${prefix}reactionsw
+┃ ▢ ${prefix}reactionsw on/off
+┃ ▢ ${prefix}reactionsw delay <1-20/random>
 ┃ ▢ ${prefix}notifgc
 ┃ ▢ ${prefix}typing
 ┃ ▢ ${prefix}record
@@ -441,18 +442,35 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             break;
             case "reactionsw": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off atau ${prefix + command} delay <angka/random>`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
+                if (!text) {
+                    let status = wily.reactionsw ? "Aktif ✅" : "Mati ❌";
+                    let delayStr = wily.reactionDelay === 'random' ? "Random (1-20s)" : `${wily.reactionDelay} detik`;
+                    let msg = `╭━━━『 *AUTO REACTION SW* 』━━━┄
+┃
+┃ ⭔ Status : ${status}
+┃ ⭔ Delay  : ${delayStr}
+┃
+┣━━『 *PANDUAN* 』━━┄
+┃
+┃ ▢ ${prefix + command} on
+┃ ▢ ${prefix + command} off
+┃ ▢ ${prefix + command} delay <1-20>
+┃ ▢ ${prefix + command} delay random
+┃
+╰━━━━━━━━━━━━━━━━━━┄`;
+                    return reply(msg);
+                }
                 const args = text.split(' ');
                 const action = args[0].toLowerCase();
                 
                 if (action === 'on') {
-                    if (wily.reactionsw) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
+                    if (wily.reactionsw) return reply(`⚠️ Fitur sudah aktif.`);
                     wily.reactionsw = true;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil diaktifkan ✅');
                 } else if (action === 'off') {
-                    if (!wily.reactionsw) return reply(`maaf fitur tersebut sedang keadaan off bila mau mengaktifkan ketik ${prefix + command} on`);
+                    if (!wily.reactionsw) return reply(`⚠️ Fitur sudah mati.`);
                     wily.reactionsw = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil dimatikan ❌');
@@ -465,7 +483,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                         reply('Delay Reaction SW berhasil diatur ke *Random* (1-20 detik) ✅');
                     } else {
                         let num = parseInt(delayVal);
-                        if (isNaN(num) || num < 1 || num > 20) return reply('maaf max sampe 1 sampai 20 detik');
+                        if (isNaN(num) || num < 1 || num > 20) return reply('❌ Maaf, delay hanya diperbolehkan antara 1 sampai 20 detik.');
                         wily.reactionDelay = num;
                         fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                         reply(`Delay Reaction SW berhasil diatur ke *${num} detik* ✅`);
