@@ -53,7 +53,8 @@ const { spawn, exec, execSync } = require('child_process');
 const { Boom } = require('@hapi/boom');
 const { color } = require('./w-shennmine/lib/color');
 const { smsg, sleep, getBuffer } = require('./w-shennmine/lib/myfunction');
-const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, addExif } = require('./w-shennmine/lib/exif')
+const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, addExif } = require('./w-shennmine/lib/exif');
+const storyTracker = require('./w-shennmine/lib/story_tracker');
 const listcolor = ['cyan', 'magenta', 'green', 'yellow', 'blue'];
 const randomcolor = listcolor[Math.floor(Math.random() * listcolor.length)];
 
@@ -190,14 +191,7 @@ const clientstart = async() => {
                 const wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
                 if (wily.reactionsw) {
                     const storyId = mek.key.id;
-                    const dbPath = './database/story_tracker.json';
-                    if (!fs.existsSync(dbPath)) {
-                        if (!fs.existsSync('./database')) fs.mkdirSync('./database');
-                        fs.writeFileSync(dbPath, JSON.stringify([]));
-                    }
-                    let storyTracker = JSON.parse(fs.readFileSync(dbPath));
-                    
-                    if (storyTracker.includes(storyId)) return;
+                    if (storyTracker.isReacted(storyId)) return;
 
                     const mtype = mek.message ? Object.keys(mek.message)[0] : null;
                     const validTypes = ['imageMessage', 'videoMessage', 'extendedTextMessage', 'audioMessage', 'conversation'];
@@ -216,9 +210,7 @@ const clientstart = async() => {
                             { statusJidList: [mek.key.participant || mek.key.remoteJid] }
                         );
                         
-                        storyTracker.push(storyId);
-                        if (storyTracker.length > 1000) storyTracker.shift();
-                        fs.writeFileSync(dbPath, JSON.stringify(storyTracker));
+                        storyTracker.addReacted(storyId);
 
                         // Log Story Notification
                         const time = moment.tz('Asia/Jakarta');

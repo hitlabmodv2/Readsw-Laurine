@@ -4,7 +4,7 @@
   "terminal": true,
   "welcome": true,
   "goodbye": true,
-  "autotyping": false,
-  "autorecord": true,
+  "autotyping": true,
+  "autorecord": false,
   "notifgc": false
 }
