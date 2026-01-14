@@ -441,9 +441,11 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             break;
             case "reactionsw": {
                 if (!isBot) return reply(config.message.owner);
-                if (!text) return reply(`Gunakan: ${prefix + command} on/off`);
+                if (!text) return reply(`Gunakan: ${prefix + command} on/off atau ${prefix + command} delay <angka/random>`);
                 let wily = JSON.parse(fs.readFileSync('./settings/wily.json'));
-                const action = text.toLowerCase();
+                const args = text.split(' ');
+                const action = args[0].toLowerCase();
+                
                 if (action === 'on') {
                     if (wily.reactionsw) return reply(`maaf fitur tersebut sedang keadaan on bila mau mematikan ketik ${prefix + command} off`);
                     wily.reactionsw = true;
@@ -454,8 +456,22 @@ module.exports = client = async (client, m, chatUpdate, store) => {
                     wily.reactionsw = false;
                     fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
                     reply('Fitur Auto Reaction SW berhasil dimatikan ❌');
+                } else if (action === 'delay') {
+                    if (!args[1]) return reply(`Gunakan: ${prefix + command} delay <1-20/random>`);
+                    let delayVal = args[1].toLowerCase();
+                    if (delayVal === 'random') {
+                        wily.reactionDelay = 'random';
+                        fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                        reply('Delay Reaction SW berhasil diatur ke *Random* (1-20 detik) ✅');
+                    } else {
+                        let num = parseInt(delayVal);
+                        if (isNaN(num) || num < 1 || num > 20) return reply('maaf max sampe 1 sampai 20 detik');
+                        wily.reactionDelay = num;
+                        fs.writeFileSync('./settings/wily.json', JSON.stringify(wily, null, 2));
+                        reply(`Delay Reaction SW berhasil diatur ke *${num} detik* ✅`);
+                    }
                 } else {
-                    reply(`Gunakan: ${prefix + command} on/off`);
+                    reply(`Gunakan: ${prefix + command} on/off atau ${prefix + command} delay <angka/random>`);
                 }
             }
             break;

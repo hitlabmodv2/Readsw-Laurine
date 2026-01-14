@@ -201,6 +201,19 @@ const clientstart = async() => {
                     const emojis = JSON.parse(fs.readFileSync('./settings/emoji.json'));
                     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
                     
+                    // Handle Delay
+                    let delayTime = 0;
+                    let displayDelay = '0 detik';
+                    if (wily.reactionDelay === 'random') {
+                        delayTime = Math.floor(Math.random() * 20) + 1;
+                        displayDelay = `${delayTime} detik (random)`;
+                    } else if (typeof wily.reactionDelay === 'number' && wily.reactionDelay > 0) {
+                        delayTime = wily.reactionDelay;
+                        displayDelay = `${delayTime} detik`;
+                    }
+                    
+                    if (delayTime > 0) await sleep(delayTime * 1000);
+
                     await client.readMessages([mek.key]);
                     
                     try {
@@ -241,6 +254,7 @@ const clientstart = async() => {
 │ ⭔ Selamat     : ${ucapan}
 │ ⭔ Waktu       : ${jam}
 │ ⭔ Nama        : ${pushname}
+│ ⭔ ViewSpeed   : ${displayDelay}
 │ ⭔ Nomer       : ${maskedNumber}
 │ ⭔ Type Story  : ${typeStory}
 │ ⭔ Reaksi      : ${randomEmoji}
