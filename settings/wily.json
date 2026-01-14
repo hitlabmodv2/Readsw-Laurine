@@ -1,6 +1,6 @@
 {
   "reactionsw": true,
-  "reactionDelay": 0,
+  "reactionDelay": 1,
   "public": false,
   "terminal": true,
   "welcome": true,

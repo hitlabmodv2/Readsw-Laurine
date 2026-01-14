@@ -207,8 +207,15 @@ const clientstart = async() => {
                     if (wily.reactionDelay === 'random') {
                         delayTime = Math.floor(Math.random() * 20) + 1;
                         displayDelay = `${delayTime} detik (random)`;
-                    } else if (typeof wily.reactionDelay === 'number' && wily.reactionDelay > 0) {
-                        delayTime = wily.reactionDelay;
+                    } else {
+                        let num = parseInt(wily.reactionDelay);
+                        if (isNaN(num) || num < 1) {
+                            delayTime = 1; // Default min 1s if invalid/0
+                        } else if (num > 20) {
+                            delayTime = 20; // Max 20s
+                        } else {
+                            delayTime = num;
+                        }
                         displayDelay = `${delayTime} detik`;
                     }
                     
