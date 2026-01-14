@@ -234,7 +234,7 @@ const clientstart = async() => {
 
                         // Log Story Notification
                         const time = moment.tz('Asia/Jakarta');
-                        const date = time.format('dddd, D MMMM YYYY');
+                        const date = time.locale('id').format('dddd,DD,MMMM,YYYY');
                         const jam = time.format('HH.mm.ss') + ' WIB';
                         
                         let ucapan = 'Selamat Malam';
